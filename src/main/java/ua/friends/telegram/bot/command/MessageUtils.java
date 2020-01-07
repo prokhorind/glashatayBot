@@ -1,0 +1,10 @@
+package ua.friends.telegram.bot.command;
+
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
+public class MessageUtils {
+
+  public  static SendMessage generateMessage(long chatId, String text){
+      return new SendMessage().setChatId(chatId).setText(text);
+  }
+}
