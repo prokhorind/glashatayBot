@@ -7,25 +7,31 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.friends.telegram.bot.command.Endpoint;
 import ua.friends.telegram.bot.command.TextCommandExecutor;
+import ua.friends.telegram.bot.service.UserToChatService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 public class GlashatayBot extends TelegramLongPollingBot {
 
+    private UserToChatService userToChatService = new UserToChatService();
+
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
-        String command = message.getText().split(" ")[0];
         if (message.getFrom().getBot()) {
             return;
         }
+
+        String command = message.getText().split(" ")[0];
         Endpoint endpoint = Stream.of(Endpoint.values()).filter(c -> c.getValue().equalsIgnoreCase(command)).findAny().orElse(Endpoint.INVALID);
-        if (Objects.nonNull(endpoint)) {
-            if (Endpoint.SAY.equals(endpoint)) {
-                execute(update, Endpoint.DELETE);
-                execute(update, endpoint);
-            }
+        userToChatService.processUserAndChatInDb(message);
+        processCommands(update, endpoint);
+    }
+
+    private void processCommands(Update update, Endpoint endpoint) {
+        if (Endpoint.SAY.equals(endpoint)) {
+            execute(update, Endpoint.DELETE);
+            execute(update, endpoint);
         }
     }
 
