@@ -2,9 +2,7 @@ package ua.friends.telegram.bot.command;
 
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ua.friends.telegram.bot.command.impl.DeleteMessageCommand;
-import ua.friends.telegram.bot.command.impl.GlashatayCommand;
-import ua.friends.telegram.bot.command.impl.InvalidMessageCommand;
+import ua.friends.telegram.bot.command.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +15,8 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.SAY, new GlashatayCommand());
         commandMap.put(Endpoint.INVALID, new InvalidMessageCommand());
         commandMap.put(Endpoint.DELETE,new DeleteMessageCommand());
+        commandMap.put(Endpoint.PIDORREG, new GayRegCommand());
+        commandMap.put(Endpoint.PIDORDEL, new GayRemoveCommand());
     }
 
     public BotApiMethod execute(Endpoint endpoint, Update update) {

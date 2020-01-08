@@ -6,6 +6,7 @@ import ua.friends.telegram.bot.entity.User;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserService {
     private UserDao userDao;
@@ -33,7 +34,7 @@ public class UserService {
         }
         User user = optUser.get();
         Set<Chat> chatSet = user.getChats();
-        return chatSet.contains(chatId);
+        return chatSet.stream().map(a -> a.getChatId()).collect(Collectors.toSet()).contains(chatId);
     }
 
     public Optional<User> find(String login) {

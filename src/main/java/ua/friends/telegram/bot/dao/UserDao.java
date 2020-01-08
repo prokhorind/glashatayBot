@@ -4,7 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import ua.friends.telegram.bot.config.HibernateUtil;
+import ua.friends.telegram.bot.entity.BanPreferences;
 import ua.friends.telegram.bot.entity.User;
+import ua.friends.telegram.bot.entity.UserPreferences;
 
 import javax.persistence.NoResultException;
 import java.util.Objects;
@@ -33,6 +35,15 @@ public class UserDao {
         }
     }
 
+    public void update(User user) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.update(user);
+        session.flush();
+        tx.commit();
+        session.close();
+    }
+
     public void save(String firstName, String lastName, String login) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -40,9 +51,12 @@ public class UserDao {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setLogin(login);
+        UserPreferences gayPreference = new BanPreferences();
+        gayPreference.setUser(user);
         try {
             tx = session.beginTransaction();
             session.save(user);
+            session.save(gayPreference);
             session.flush();
             tx.commit();
         } catch (Exception e) {

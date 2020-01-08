@@ -33,6 +33,19 @@ public class User implements Serializable {
     )
     Set<Chat> chats = new HashSet<>();
 
+    @ManyToMany(cascade = {CascadeType.PERSIST }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "Gay_Chat",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "chat_id") }
+    )
+    Set<Chat> gayChats = new HashSet<>();
+
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "USER_PREFERENCE_ID")
+    private UserPreferences userPreferences;
+
     public User(){}
 
     public static long getSerialVersionUID() {
@@ -69,6 +82,22 @@ public class User implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setUserPreferences(UserPreferences userPreferences) {
+        this.userPreferences = userPreferences;
+    }
+
+    public UserPreferences getUserPreferences() {
+        return userPreferences;
+    }
+
+    public void setGayChats(Set<Chat> gayChats) {
+        this.gayChats = gayChats;
+    }
+
+    public Set<Chat> getGayChats() {
+        return gayChats;
     }
 
     public void setChats(Set<Chat> chats) {

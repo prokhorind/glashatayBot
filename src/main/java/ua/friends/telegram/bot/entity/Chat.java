@@ -1,12 +1,13 @@
 package ua.friends.telegram.bot.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table
-public class Chat {
+public class Chat implements Serializable {
     private static final long serialVersionUID = -1798070786993154676L;
 
     @Id
@@ -15,6 +16,10 @@ public class Chat {
 
     @ManyToMany(mappedBy = "chats", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
+
+
+    @ManyToMany(mappedBy = "gayChats", fetch = FetchType.EAGER)
+    private Set<User> gayUsers = new HashSet<>();
 
     public Chat(){};
 
@@ -36,5 +41,13 @@ public class Chat {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public void setGayUsers(Set<User> gayUsers) {
+        this.gayUsers = gayUsers;
+    }
+
+    public Set<User> getGayUsers() {
+        return gayUsers;
     }
 }

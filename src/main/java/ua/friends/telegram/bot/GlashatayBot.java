@@ -29,10 +29,13 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processCommands(Update update, Endpoint endpoint) {
+        if(Endpoint.INVALID.equals(endpoint)){
+            return;
+        }
         if (Endpoint.SAY.equals(endpoint)) {
             execute(update, Endpoint.DELETE);
-            execute(update, endpoint);
         }
+        execute(update, endpoint);
     }
 
 
