@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import ua.friends.telegram.bot.config.HibernateUtil;
+import ua.friends.telegram.bot.data.UserData;
 import ua.friends.telegram.bot.entity.BanPreferences;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.entity.UserPreferences;
@@ -14,12 +15,13 @@ import java.util.Optional;
 
 public class UserDao {
 
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> find(int tgId, long chatId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
-            Query query = session.createQuery("from User where login = :login");
-            query.setParameter("login", login);
+            Query query = session.createQuery("Select u FROM User as u LEFT JOIN  u.chats c ON c.chatId = :chatId where u.tgId= :tgId ");
+            query.setParameter("tgId", tgId);
+            query.setParameter("chatId", chatId);
             User user = (User) query.getSingleResult();
             session.flush();
             tx.commit();
@@ -44,14 +46,16 @@ public class UserDao {
         session.close();
     }
 
-    public void save(String firstName, String lastName, String login) {
+    public void save(UserData userData) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setLogin(login);
+        user.setFirstName(userData.getFirstName());
+        user.setLastName(userData.getLastName());
+        user.setLogin(userData.getLogin());
+        user.setTgId(userData.getTgId());
         UserPreferences gayPreference = new BanPreferences();
+        user.setUserPreferences(gayPreference);
         gayPreference.setUser(user);
         try {
             tx = session.beginTransaction();

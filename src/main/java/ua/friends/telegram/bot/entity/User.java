@@ -16,16 +16,19 @@ public class User implements Serializable {
     @Column(name = "user_id", unique = true, nullable = false)
     private Integer userId;
 
-    @Column(name = "LOGIN", unique = true, nullable = false, length = 100)
+    @Column
+    private Integer tgId;
+
+    @Column(name = "LOGIN", length = 100)
     private String login;
 
-    @Column(name = "FIRST_NAME", unique = false, nullable = false, length = 100)
+    @Column(name = "FIRST_NAME", length = 100)
     private String firstName;
 
-    @Column(name = "LAST_NAME", unique = false, nullable = false, length = 100)
+    @Column(name = "LAST_NAME", length = 100)
     private String lastName;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "User_Chat",
             joinColumns = { @JoinColumn(name = "user_id") },
@@ -106,5 +109,13 @@ public class User implements Serializable {
 
     public Set<Chat> getChats() {
         return chats;
+    }
+
+    public Integer getTgId() {
+        return tgId;
+    }
+
+    public void setTgId(Integer tgId) {
+        this.tgId = tgId;
     }
 }

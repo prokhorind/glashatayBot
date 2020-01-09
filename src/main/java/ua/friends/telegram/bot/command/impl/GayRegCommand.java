@@ -21,15 +21,15 @@ public class GayRegCommand implements Command {
 
     @Override
     public SendMessage executeCommand(Update update) {
-        String login = update.getMessage().getFrom().getUserName();
         long chatId = update.getMessage().getChatId();
-        User user = userService.find(login).get();
+        int tgId = update.getMessage().getFrom().getId();
+        User user = userService.find(tgId, chatId).get();
         Chat chat = chatService.find(chatId).get();
 
         if (user.getGayChats().stream().map(a -> a.getChatId()).collect(Collectors.toSet()).contains(chatId)) {
             return MessageUtils.generateMessage(update.getMessage().getChatId(), String.format("%s %s", user.getLogin(), MESSAGE));
         }
-        gayGameService.reg(user,chat);
+        gayGameService.reg(user, chat);
         return MessageUtils.generateMessage(update.getMessage().getChatId(), String.format("%s %s", user.getLogin(), SUCCESS_MESSAGE));
     }
 }

@@ -1,6 +1,7 @@
 package ua.friends.telegram.bot.service;
 
 import ua.friends.telegram.bot.dao.UserDao;
+import ua.friends.telegram.bot.data.UserData;
 import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.entity.User;
 
@@ -19,16 +20,16 @@ public class UserService {
         this.userDao = UserDao;
     }
 
-    public void save(String firstName, String lastName, String login) {
-        userDao.save(firstName, lastName, login);
+    public void save(UserData userData) {
+        userDao.save(userData);
     }
 
-    public boolean isUserExist(String login) {
-        return find(login).isPresent();
+    public boolean isUserExist(int tgId, long chatId) {
+        return find(tgId, chatId).isPresent();
     }
 
-    public boolean isUserHasChat(String login, long chatId) {
-        Optional<User> optUser = find(login);
+    public boolean isUserHasChat(int tgId, long chatId) {
+        Optional<User> optUser = find(tgId, chatId);
         if (!optUser.isPresent()) {
             throw new RuntimeException("User not found");
         }
@@ -37,7 +38,7 @@ public class UserService {
         return chatSet.stream().map(a -> a.getChatId()).collect(Collectors.toSet()).contains(chatId);
     }
 
-    public Optional<User> find(String login) {
-        return userDao.findByLogin(login);
+    public Optional<User> find(int id, long chatId) {
+        return userDao.find(id, chatId);
     }
 }
