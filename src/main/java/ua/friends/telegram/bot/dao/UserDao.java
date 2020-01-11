@@ -5,11 +5,12 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import ua.friends.telegram.bot.config.HibernateUtil;
 import ua.friends.telegram.bot.data.UserData;
-import ua.friends.telegram.bot.entity.BanPreferences;
 import ua.friends.telegram.bot.entity.User;
-import ua.friends.telegram.bot.entity.UserPreferences;
+import ua.friends.telegram.bot.entity.UserChatPreferences;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -54,13 +55,11 @@ public class UserDao {
         user.setLastName(userData.getLastName());
         user.setLogin(userData.getLogin());
         user.setTgId(userData.getTgId());
-        UserPreferences gayPreference = new BanPreferences();
-        user.setUserPreferences(gayPreference);
-        gayPreference.setUser(user);
+        List<UserChatPreferences> userChatPreferencesList = new ArrayList<>();
+        user.setUserChatPreferences(userChatPreferencesList);
         try {
             tx = session.beginTransaction();
             session.save(user);
-            session.save(gayPreference);
             session.flush();
             tx.commit();
         } catch (Exception e) {

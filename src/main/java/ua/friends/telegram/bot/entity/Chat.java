@@ -3,6 +3,7 @@ package ua.friends.telegram.bot.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,11 @@ public class Chat implements Serializable {
     @ManyToMany(mappedBy = "gayChats", fetch = FetchType.EAGER)
     private Set<User> gayUsers = new HashSet<>();
 
-    public Chat(){};
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chat")
+    private List<UserChatPreferences> userChatPreferences;
+
+    public Chat() {
+    }
 
     public long getChatId() {
         return chatId;
@@ -49,5 +54,13 @@ public class Chat implements Serializable {
 
     public Set<User> getGayUsers() {
         return gayUsers;
+    }
+
+    public List<UserChatPreferences> getUserChatPreferences() {
+        return userChatPreferences;
+    }
+
+    public void setUserChatPreferences(List<UserChatPreferences> userChatPreferences) {
+        this.userChatPreferences = userChatPreferences;
     }
 }

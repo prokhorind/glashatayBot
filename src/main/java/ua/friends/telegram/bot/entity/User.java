@@ -3,6 +3,7 @@ package ua.friends.telegram.bot.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -36,20 +37,20 @@ public class User implements Serializable {
     )
     Set<Chat> chats = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Gay_Chat",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "chat_id") }
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "chat_id")}
     )
     Set<Chat> gayChats = new HashSet<>();
 
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_PREFERENCE_ID")
-    private UserPreferences userPreferences;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "user")
+    private List<UserChatPreferences> userChatPreferences;
 
-    public User(){}
+    public User() {
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -87,12 +88,12 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public void setUserPreferences(UserPreferences userPreferences) {
-        this.userPreferences = userPreferences;
+    public List<UserChatPreferences> getUserChatPreferences() {
+        return userChatPreferences;
     }
 
-    public UserPreferences getUserPreferences() {
-        return userPreferences;
+    public void setUserChatPreferences(List<UserChatPreferences> userChatPreferences) {
+        this.userChatPreferences = userChatPreferences;
     }
 
     public void setGayChats(Set<Chat> gayChats) {

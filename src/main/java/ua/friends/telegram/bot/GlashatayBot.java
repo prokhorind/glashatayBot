@@ -9,10 +9,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.friends.telegram.bot.command.Endpoint;
 import ua.friends.telegram.bot.command.TextCommandExecutor;
 import ua.friends.telegram.bot.command.impl.UnbanCommand;
+import ua.friends.telegram.bot.data.MessageData;
 import ua.friends.telegram.bot.service.UserToChatService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class GlashatayBot extends TelegramLongPollingBot {
@@ -24,31 +26,41 @@ public class GlashatayBot extends TelegramLongPollingBot {
         if (message.getFrom().getBot()) {
             return;
         }
-        long chatId = message.getChatId();
-        int tgId = message.getFrom().getId();
-        String command = message.getText().split(" ")[0];
-        Endpoint endpoint = Stream.of(Endpoint.values()).filter(c -> c.getValue().equalsIgnoreCase(command)).findAny().orElse(Endpoint.INVALID);
+        MessageData messageData = getMessageData(message);
+        processMessage(update, message, messageData);
+    }
 
-        if (userToChatService.isBanned(tgId, chatId) && !Endpoint.SAY.equals(endpoint)) {
-            if (ban(update)) return;
+    private void processMessage(Update update, Message message, MessageData messageData) {
+        Endpoint endpoint = Stream.of(Endpoint.values()).filter(hasEndpoint(messageData.getCommand())).findAny().orElse(Endpoint.INVALID);
+        if (userToChatService.isBanned(messageData.getUserTgId(), messageData.getChatId()) && !isUserCanDoThisCommandWhileBanned(endpoint)) {
+            if (!canUnBan(update)) {
+                deleteMessage(update);
+            }
         }
-
-        userToChatService.processUserAndChatInDb(message);
+        if (!userToChatService.isUserHasChat(messageData.getUserTgId(), messageData.getChatId())) {
+            userToChatService.processUserAndChatInDb(message);
+        }
         processCommands(update, endpoint);
     }
 
-    private boolean ban(Update update) {
+    private boolean isUserCanDoThisCommandWhileBanned(Endpoint endpoint) {
+        return Endpoint.SAY.equals(endpoint);
+    }
+
+    private MessageData getMessageData(Message message) {
+        long chatId = message.getChatId();
+        int tgId = message.getFrom().getId();
+        String command = message.getText().split(" ")[0];
+        return new MessageData(chatId, tgId, command);
+    }
+
+    private Predicate<Endpoint> hasEndpoint(String command) {
+        return c -> c.getValue().equalsIgnoreCase(command);
+    }
+
+    private boolean canUnBan(Update update) {
         SendMessage msg = new UnbanCommand().executeCommand(update);
-        if (Objects.isNull(msg)) {
-            deleteMessage(update);
-            return true;
-        }
-        try {
-            execute(msg);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return !Objects.isNull(msg);
     }
 
 

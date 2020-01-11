@@ -1,7 +1,8 @@
 package ua.friends.telegram.bot.command;
 
 public enum Endpoint {
-    SAY("/SAY"), INVALID("/INVALID"), DELETE("/DELETE"), PIDORREG("/PIDORREG"), PIDORDEL("/PIDORDEL"), BAN("/BAN"), UNBAN("/UNBAN");
+    SAY("/SAY"), INVALID("/INVALID"), DELETE("/DELETE"), PIDORREG("/PIDORREG"),
+    PIDORDEL("/PIDORDEL"), BAN("/BAN"), UNBAN("/UNBAN"), PUNCH("/PUNCH");
 
     private String value;
 

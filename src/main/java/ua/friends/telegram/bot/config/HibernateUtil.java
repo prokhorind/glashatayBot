@@ -5,10 +5,10 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
+import ua.friends.telegram.bot.entity.BanChatPreferences;
 import ua.friends.telegram.bot.entity.Chat;
-import ua.friends.telegram.bot.entity.BanPreferences;
 import ua.friends.telegram.bot.entity.User;
-import ua.friends.telegram.bot.entity.UserPreferences;
+import ua.friends.telegram.bot.entity.UserChatPreferences;
 
 import java.util.Properties;
 
@@ -31,8 +31,8 @@ public class HibernateUtil {
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Chat.class);
-                configuration.addAnnotatedClass(UserPreferences.class);
-                configuration.addAnnotatedClass(BanPreferences.class);
+                configuration.addAnnotatedClass(UserChatPreferences.class);
+                configuration.addAnnotatedClass(BanChatPreferences.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);

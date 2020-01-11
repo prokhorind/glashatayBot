@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "USER_PREFERENCES")
+@Table(name = "USER_CHAT_PREFERENCES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "UP_TYPE")
-public abstract class UserPreferences  implements Serializable {
+@DiscriminatorColumn(name = "UCP_TYPE")
+public abstract class UserChatPreferences implements Serializable {
     private static final long serialVersionUID = -1798070786993154676L;
 
     @Id
@@ -15,9 +15,15 @@ public abstract class UserPreferences  implements Serializable {
     @Column(name = "USER_PREFERENCE_ID")
     private int userPreferencesId;
 
-    @OneToOne(mappedBy = "userPreferences", cascade = CascadeType.ALL,
+    @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER, optional = false)
-    private User user;
+    @JoinColumn(name = "user_id")
+    protected User user;
+
+    @ManyToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "chat_id")
+    protected Chat chat;
 
     public void setUser(User user) {
         this.user = user;
@@ -25,5 +31,13 @@ public abstract class UserPreferences  implements Serializable {
 
     public User getUser() {
         return user;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 }

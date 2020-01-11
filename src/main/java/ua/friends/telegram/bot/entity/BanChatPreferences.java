@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @DiscriminatorValue("GP")
-public class BanPreferences extends UserPreferences {
+public class BanChatPreferences extends UserChatPreferences {
 
     @Column
     @ColumnDefault("false")
@@ -19,7 +19,7 @@ public class BanPreferences extends UserPreferences {
     @Column
     private LocalDateTime toBan;
 
-    public BanPreferences() {
+    public BanChatPreferences() {
     }
 
     public void setHasBan(boolean hasBan) {
