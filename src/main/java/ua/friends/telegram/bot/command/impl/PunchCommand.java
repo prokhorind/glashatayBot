@@ -25,7 +25,6 @@ public class PunchCommand implements Command {
 
     private String createMessage(String from, String to) {
         StringBuilder sb = new StringBuilder();
-        sb.append("@");
         sb.append(from);
         sb.append("\t");
         sb.append("пнул");

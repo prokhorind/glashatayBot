@@ -11,7 +11,7 @@ public class TelegramNameUtils {
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         if (userName != null && !userName.isEmpty()) {
-            return userName;
+            return String.format("%s%s", "@", userName);
         } else if (isFirstsnameOrLastnameNotEmpty(firstName, lastName)) {
             return String.format("%s %s", setEmptyIfNull(firstName), setEmptyIfNull(lastName));
         } else {
