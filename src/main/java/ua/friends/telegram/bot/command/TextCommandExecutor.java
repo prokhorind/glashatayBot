@@ -19,6 +19,7 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.PIDORDEL, new GayRemoveCommand());
         commandMap.put(Endpoint.BAN, new BanCommand());
         commandMap.put(Endpoint.PUNCH, new PunchCommand());
+        commandMap.put(Endpoint.TGID, new UserIdCommand());
     }
 
     public BotApiMethod execute(Endpoint endpoint, Update update) {

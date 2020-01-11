@@ -32,15 +32,30 @@ public class GlashatayBot extends TelegramLongPollingBot {
 
     private void processMessage(Update update, Message message, MessageData messageData) {
         Endpoint endpoint = Stream.of(Endpoint.values()).filter(hasEndpoint(messageData.getCommand())).findAny().orElse(Endpoint.INVALID);
+        processBan(update, messageData, endpoint);
+        processNewData(message, messageData);
+        processLoginChange(message, messageData);
+        processCommands(update, endpoint);
+    }
+
+    private void processBan(Update update, MessageData messageData, Endpoint endpoint) {
         if (userToChatService.isBanned(messageData.getUserTgId(), messageData.getChatId()) && !isUserCanDoThisCommandWhileBanned(endpoint)) {
             if (!canUnBan(update)) {
                 deleteMessage(update);
             }
         }
+    }
+
+    private void processNewData(Message message, MessageData messageData) {
         if (!userToChatService.isUserHasChat(messageData.getUserTgId(), messageData.getChatId())) {
             userToChatService.processUserAndChatInDb(message);
         }
-        processCommands(update, endpoint);
+    }
+
+    private void processLoginChange(Message message, MessageData messageData) {
+        if (userToChatService.isUserChangeLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName())) {
+            userToChatService.updateUserLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName());
+        }
     }
 
     private boolean isUserCanDoThisCommandWhileBanned(Endpoint endpoint) {

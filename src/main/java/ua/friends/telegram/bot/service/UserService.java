@@ -38,7 +38,30 @@ public class UserService {
         return chatSet.stream().map(a -> a.getChatId()).collect(Collectors.toSet()).contains(chatId);
     }
 
+    public boolean isUserChangedLogin(int tgId, long chatId, String messageLogin) {
+        Optional<User> optUser = find(tgId, chatId);
+        if (optUser.isPresent()) {
+            if (optUser.get().getLogin() != messageLogin) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
+    public void updateUser(int tgId, long chatId, String messageLogin) {
+        Optional<User> optUser = find(tgId, chatId);
+        if (optUser.isPresent()) {
+            User u = optUser.get();
+            u.setLogin(messageLogin);
+            userDao.update(u);
+        }
+    }
+
     public Optional<User> find(int id, long chatId) {
         return userDao.find(id, chatId);
+    }
+
+    public Optional<User> find(String login, long chatId) {
+        return userDao.find(login, chatId);
     }
 }

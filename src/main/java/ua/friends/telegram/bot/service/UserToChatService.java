@@ -94,6 +94,15 @@ public class UserToChatService {
         userToChatDao.createChatPreferences(createdUser, createdChat);
     }
 
+    public boolean isUserChangeLogin(int tgId, long chatId, String messageLogin) {
+        return userService.isUserChangedLogin(tgId, chatId, messageLogin);
+    }
+
+    public void updateUserLogin(int tgId, long chatId, String messageLogin) {
+        userService.updateUser(tgId, chatId, messageLogin);
+    }
+
+
     public User getUser(int tgId, long chat) {
         return userService.find(tgId, chat).get();
     }
