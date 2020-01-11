@@ -51,6 +51,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
         long chatId = message.getChatId();
         int tgId = message.getFrom().getId();
         String command = message.getText().split(" ")[0];
+        command = command.replaceAll("@" + getBotUsername(), "");
         return new MessageData(chatId, tgId, command);
     }
 

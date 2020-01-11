@@ -13,7 +13,7 @@ public class PunchCommand implements Command {
     @Override
     public BotApiMethod executeCommand(Update update) {
         String from = TelegramNameUtils.findName(update);
-        String[] params = update.getMessage().getText().split(" ");
+        String[] params = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
 
         if (params.length == 1 || params[1] == null || params[1].isEmpty()) {
