@@ -20,6 +20,7 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.BAN, new BanCommand());
         commandMap.put(Endpoint.PUNCH, new PunchCommand());
         commandMap.put(Endpoint.TGID, new UserIdCommand());
+        commandMap.put(Endpoint.RATMSG, new RatMessageCommand());
     }
 
     public BotApiMethod execute(Endpoint endpoint, Update update) {

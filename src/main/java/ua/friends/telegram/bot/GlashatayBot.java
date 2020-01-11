@@ -59,7 +59,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private boolean isUserCanDoThisCommandWhileBanned(Endpoint endpoint) {
-        return Endpoint.SAY.equals(endpoint);
+        return Endpoint.SAY.equals(endpoint) || Endpoint.RATMSG.equals(endpoint);
     }
 
     private MessageData getMessageData(Message message) {
@@ -88,7 +88,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
         if (Endpoint.INVALID.equals(endpoint)) {
             return;
         }
-        if (Endpoint.SAY.equals(endpoint)) {
+        if (Endpoint.SAY.equals(endpoint) || Endpoint.RATMSG.equals(endpoint)) {
             execute(update, Endpoint.DELETE);
         }
         execute(update, endpoint);
