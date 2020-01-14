@@ -42,7 +42,7 @@ public class UserDao {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
-            Query query = session.createQuery("Select u FROM User as u LEFT JOIN  u.chats c ON c.chatId = :chatId where u.login= :login ");
+            Query query = session.createQuery("Select u FROM User as u JOIN  u.chats c ON c.chatId = :chatId where u.login= :login ");
             query.setParameter("login", login);
             query.setParameter("chatId", chatId);
             User user = (User) query.getSingleResult();

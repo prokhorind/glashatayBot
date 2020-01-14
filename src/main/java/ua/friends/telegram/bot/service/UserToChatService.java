@@ -39,10 +39,6 @@ public class UserToChatService {
         return bannedPreference.isPresent();
     }
 
-    private boolean isBanned(UserChatPreferences userChatPreferences, long chatId) {
-        return userToChatDao.isBanned(userChatPreferences, chatId);
-    }
-
     public void unBan(int tgID, long chatId) {
         User u = userService.find(tgID, chatId).get();
         userToChatDao.unBan(u, chatId);
@@ -71,6 +67,22 @@ public class UserToChatService {
         }
     }
 
+    public List<Chat> getAll() {
+        return chatService.getAll();
+    }
+
+    public boolean isUserChangeLogin(int tgId, long chatId, String messageLogin) {
+        return userService.isUserChangedLogin(tgId, chatId, messageLogin);
+    }
+
+    public void updateUserLogin(int tgId, long chatId, String messageLogin) {
+        userService.updateUser(tgId, chatId, messageLogin);
+    }
+
+    public User getUser(int tgId, long chat) {
+        return userService.find(tgId, chat).get();
+    }
+
     private void createUser(UserData userData, Optional<Chat> chat) {
         userService.save(userData);
         User user = userService.find(userData.getTgId(), chat.get().getChatId()).get();
@@ -94,16 +106,7 @@ public class UserToChatService {
         userToChatDao.createChatPreferences(createdUser, createdChat);
     }
 
-    public boolean isUserChangeLogin(int tgId, long chatId, String messageLogin) {
-        return userService.isUserChangedLogin(tgId, chatId, messageLogin);
-    }
-
-    public void updateUserLogin(int tgId, long chatId, String messageLogin) {
-        userService.updateUser(tgId, chatId, messageLogin);
-    }
-
-
-    public User getUser(int tgId, long chat) {
-        return userService.find(tgId, chat).get();
+    private boolean isBanned(UserChatPreferences userChatPreferences, long chatId) {
+        return userToChatDao.isBanned(userChatPreferences, chatId);
     }
 }

@@ -7,8 +7,7 @@ import ua.friends.telegram.bot.config.HibernateUtil;
 import ua.friends.telegram.bot.entity.Chat;
 
 import javax.persistence.NoResultException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class ChatDao {
 
@@ -28,7 +27,28 @@ public class ChatDao {
                 tx.rollback();
             }
             return Optional.empty();
-        }finally {
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<Chat> getAllChats() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Chat> chats;
+        Transaction tx = null;
+        try {
+            Query query = session.createQuery("from Chat");
+            tx = session.beginTransaction();
+            chats = new ArrayList<>(query.getResultList());
+            session.flush();
+            tx.commit();
+            return chats;
+        } catch (NoResultException e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            return Collections.emptyList();
+        } finally {
             session.close();
         }
     }

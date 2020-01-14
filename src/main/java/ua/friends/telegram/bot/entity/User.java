@@ -49,6 +49,9 @@ public class User implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<UserChatPreferences> userChatPreferences;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "user")
+    private Set<GayGame> gayGames = new HashSet<>();
+
     public User() {
     }
 
@@ -118,5 +121,13 @@ public class User implements Serializable {
 
     public void setTgId(Integer tgId) {
         this.tgId = tgId;
+    }
+
+    public Set<GayGame> getGayGames() {
+        return gayGames;
+    }
+
+    public void setGayGames(Set<GayGame> gayGames) {
+        this.gayGames = gayGames;
     }
 }

@@ -25,6 +25,13 @@ public class Chat implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chat")
     private List<UserChatPreferences> userChatPreferences;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chat")
+    private Set<GayGame> gayGames = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chat")
+    private Set<CronInfo> cronInfos = new HashSet<>();
+
+
     public Chat() {
     }
 
@@ -62,5 +69,21 @@ public class Chat implements Serializable {
 
     public void setUserChatPreferences(List<UserChatPreferences> userChatPreferences) {
         this.userChatPreferences = userChatPreferences;
+    }
+
+    public Set<GayGame> getGayGames() {
+        return gayGames;
+    }
+
+    public void setGayGames(Set<GayGame> gayGames) {
+        this.gayGames = gayGames;
+    }
+
+    public Set<CronInfo> getCronInfos() {
+        return cronInfos;
+    }
+
+    public void setCronInfos(Set<CronInfo> cronInfos) {
+        this.cronInfos = cronInfos;
     }
 }

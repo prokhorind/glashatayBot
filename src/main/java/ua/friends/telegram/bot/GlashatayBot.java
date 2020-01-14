@@ -30,6 +30,13 @@ public class GlashatayBot extends TelegramLongPollingBot {
         processMessage(update, message, messageData);
     }
 
+    public void executeFromCron(long chatId, String message) throws TelegramApiException {
+        SendMessage sm = new SendMessage();
+        sm.setText(message);
+        sm.setChatId(chatId);
+        execute(sm);
+    }
+
     private void processMessage(Update update, Message message, MessageData messageData) {
         Endpoint endpoint = Stream.of(Endpoint.values()).filter(hasEndpoint(messageData.getCommand())).findAny().orElse(Endpoint.INVALID);
         processBan(update, messageData, endpoint);

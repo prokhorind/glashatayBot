@@ -3,6 +3,7 @@ package ua.friends.telegram.bot.service;
 import ua.friends.telegram.bot.dao.ChatDao;
 import ua.friends.telegram.bot.entity.Chat;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ChatService {
@@ -17,8 +18,8 @@ public class ChatService {
         this.chatDao = chatDao;
     }
 
-    public void processChat(long chatId){
-        if(!isChatExist(chatId)){
+    public void processChat(long chatId) {
+        if (!isChatExist(chatId)) {
             save(chatId);
         }
     }
@@ -33,6 +34,10 @@ public class ChatService {
 
     public Optional<Chat> find(long chatId) {
         return chatDao.findChatById(chatId);
+    }
+
+    public List<Chat> getAll() {
+        return chatDao.getAllChats();
     }
 
 }
