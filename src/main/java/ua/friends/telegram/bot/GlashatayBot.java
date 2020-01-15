@@ -15,11 +15,14 @@ import ua.friends.telegram.bot.service.UserToChatService;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class GlashatayBot extends TelegramLongPollingBot {
 
     private UserToChatService userToChatService = new UserToChatService();
+
+    private Logger logger = Logger.getLogger(GlashatayBot.class.getName());
 
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
@@ -39,6 +42,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
 
     private void processMessage(Update update, Message message, MessageData messageData) {
         Endpoint endpoint = Stream.of(Endpoint.values()).filter(hasEndpoint(messageData.getCommand())).findAny().orElse(Endpoint.INVALID);
+        logger.info("ENDPOINT:" + endpoint.getValue());
         processBan(update, messageData, endpoint);
         processNewData(message, messageData);
         processLoginChange(message, messageData);
@@ -46,20 +50,25 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processBan(Update update, MessageData messageData, Endpoint endpoint) {
+        logger.info("Try to process BAN for user:" + messageData.getUserTgId());
         if (userToChatService.isBanned(messageData.getUserTgId(), messageData.getChatId()) && !isUserCanDoThisCommandWhileBanned(endpoint)) {
+            logger.info("User banned:" + messageData.getUserTgId());
             if (!canUnBan(update)) {
+                logger.info("Message from user deleted:" + messageData.getUserTgId());
                 deleteMessage(update);
             }
         }
     }
 
     private void processNewData(Message message, MessageData messageData) {
+        logger.info("Try to process new data:" + messageData.getUserTgId());
         if (!userToChatService.isUserHasChat(messageData.getUserTgId(), messageData.getChatId())) {
             userToChatService.processUserAndChatInDb(message);
         }
     }
 
     private void processLoginChange(Message message, MessageData messageData) {
+        logger.info("Try to process login change:" + messageData.getUserTgId());
         if (userToChatService.isUserChangeLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName())) {
             userToChatService.updateUserLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName());
         }
@@ -92,6 +101,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processCommands(Update update, Endpoint endpoint) {
+        logger.info("Try to process endpoint:" + endpoint);
         if (Endpoint.INVALID.equals(endpoint)) {
             return;
         }
@@ -108,6 +118,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
+            logger.warning(e.getMessage());
             e.printStackTrace();
         }
     }

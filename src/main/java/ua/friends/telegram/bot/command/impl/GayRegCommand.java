@@ -10,6 +10,7 @@ import ua.friends.telegram.bot.service.ChatService;
 import ua.friends.telegram.bot.service.GayGameService;
 import ua.friends.telegram.bot.service.UserService;
 
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class GayRegCommand implements Command {
@@ -19,8 +20,11 @@ public class GayRegCommand implements Command {
     private ChatService chatService = new ChatService();
     private GayGameService gayGameService = new GayGameService();
 
+    private Logger logger = Logger.getLogger(GayRegCommand.class.getName());
+
     @Override
     public SendMessage executeCommand(Update update) {
+        logger.info("GayRegCommandStarted");
         long chatId = update.getMessage().getChatId();
         int tgId = update.getMessage().getFrom().getId();
         User user = userService.find(tgId, chatId).get();

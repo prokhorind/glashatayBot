@@ -12,6 +12,7 @@ import java.util.Optional;
 public class UserIdCommand implements Command {
 
     public static final String SET_NAME = "Укажи имя";
+    public static final String SET_REAL_NAME = "Укажи реальное имя";
 
     private UserService userService = new UserService();
 
@@ -29,7 +30,10 @@ public class UserIdCommand implements Command {
 
     private String createMessage(String to, long chatID) {
         Optional<User> oUser = userService.find(to, chatID);
-        if (oUser.isPresent()) ;
-        return oUser.get().getTgId().toString();
+        if (oUser.isPresent()) {
+            return oUser.get().getTgId().toString();
+        } else {
+            return SET_REAL_NAME;
+        }
     }
 }

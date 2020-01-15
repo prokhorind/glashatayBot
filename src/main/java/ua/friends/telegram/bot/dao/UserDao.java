@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class UserDao {
+    private Logger logger = Logger.getLogger(UserDao.class.getName());
 
     public Optional<User> find(int tgId, long chatId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -27,11 +29,13 @@ public class UserDao {
             session.flush();
             tx.commit();
             session.close();
+            logger.info("User was found:" + user.getTgId());
             return Optional.of(user);
         } catch (NoResultException e) {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
             return Optional.empty();
         } finally {
             session.close();
@@ -54,6 +58,7 @@ public class UserDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
             return Optional.empty();
         } finally {
             session.close();
@@ -63,11 +68,17 @@ public class UserDao {
 
     public void update(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.update(user);
-        session.flush();
-        tx.commit();
-        session.close();
+        try {
+            Transaction tx = session.beginTransaction();
+            session.update(user);
+            session.flush();
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning(e.getMessage());
+        } finally {
+            session.close();
+        }
     }
 
     public void save(UserData userData) {
@@ -88,6 +99,7 @@ public class UserDao {
         } catch (Exception e) {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
+                logger.warning(e.getMessage());
             }
         } finally {
             session.close();

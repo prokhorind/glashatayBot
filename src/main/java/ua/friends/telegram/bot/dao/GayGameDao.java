@@ -11,8 +11,11 @@ import ua.friends.telegram.bot.entity.User;
 import javax.persistence.NoResultException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class GayGameDao {
+
+    private Logger logger = Logger.getLogger(GayGameDao.class.getName());
 
     public void regUser(User user, Chat chat) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -27,6 +30,7 @@ public class GayGameDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
         } finally {
             session.close();
         }
@@ -43,12 +47,12 @@ public class GayGameDao {
             GayGame gayGame = (GayGame) query.getSingleResult();
             session.flush();
             tx.commit();
-            session.close();
             return Optional.of(gayGame);
         } catch (NoResultException e) {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
             return Optional.empty();
         } finally {
             session.close();
@@ -61,11 +65,13 @@ public class GayGameDao {
         try {
             session.saveOrUpdate(gayGame);
             session.flush();
+            tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            logger.warning(e.getMessage());
+        } finally {
+            session.close();
         }
-        tx.commit();
-        session.close();
     }
 
     public void removeUser(User user, Chat chat) {
@@ -81,6 +87,7 @@ public class GayGameDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
         } finally {
             session.close();
         }

@@ -15,13 +15,13 @@ public abstract class UserChatPreferences implements Serializable {
     @Column(name = "USER_PREFERENCE_ID")
     private int userPreferencesId;
 
-    @ManyToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     protected User user;
 
-    @ManyToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "chat_id")
     protected Chat chat;
 

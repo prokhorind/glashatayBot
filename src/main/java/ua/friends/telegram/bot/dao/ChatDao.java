@@ -8,8 +8,10 @@ import ua.friends.telegram.bot.entity.Chat;
 
 import javax.persistence.NoResultException;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class ChatDao {
+    private Logger logger = Logger.getLogger(ChatDao.class.getName());
 
     public Optional<Chat> findChatById(long chatId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -26,6 +28,7 @@ public class ChatDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
             return Optional.empty();
         } finally {
             session.close();
@@ -47,6 +50,7 @@ public class ChatDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
             return Collections.emptyList();
         } finally {
             session.close();
@@ -67,6 +71,7 @@ public class ChatDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
         } finally {
             session.close();
         }

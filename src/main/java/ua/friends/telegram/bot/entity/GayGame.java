@@ -27,6 +27,9 @@ public class GayGame implements Serializable {
     @DefaultValue("0")
     private int count;
 
+    public GayGame() {
+    }
+
     public int getGayGameId() {
         return gayGameId;
     }

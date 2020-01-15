@@ -37,4 +37,14 @@ public class BanChatPreferences extends UserChatPreferences {
     public void setToBan(LocalDateTime toBan) {
         this.toBan = toBan;
     }
+
+    @Override
+    public String toString() {
+        return "BanChatPreferences{" +
+                "hasBan=" + hasBan +
+                ", toBan=" + toBan +
+                ", user=" + user.getTgId() +
+                ", chat=" + chat.getChatId() +
+                '}';
+    }
 }

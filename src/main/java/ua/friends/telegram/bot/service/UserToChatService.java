@@ -15,9 +15,9 @@ public class UserToChatService {
     private UserService userService = new UserService();
     private UserToChatDao userToChatDao = new UserToChatDao();
 
-    public void banUser(int tgId, long chatId, long minutes) {
-        User u = userService.find(tgId, chatId).get();
-        userToChatDao.banUser(u, chatId, minutes);
+    public void banUser(User user, long chatId, long minutes) {
+        Chat chat = chatService.find(chatId).get();
+        userToChatDao.banUser(user, chat, minutes);
     }
 
     public boolean isUserHasChat(int tgId, long chatId) {

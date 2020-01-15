@@ -9,8 +9,11 @@ import ua.friends.telegram.bot.entity.CronInfo;
 import javax.persistence.NoResultException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class CronInfoDao {
+
+    private Logger logger = Logger.getLogger(CronInfoDao.class.getName());
 
     public Optional<CronInfo> find(long chatId, String cronName) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -28,6 +31,7 @@ public class CronInfoDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
             return Optional.empty();
         } finally {
             session.close();
@@ -45,9 +49,9 @@ public class CronInfoDao {
             if (Objects.nonNull(tx)) {
                 tx.rollback();
             }
+            logger.warning(e.getMessage());
         } finally {
             session.close();
         }
-
     }
 }

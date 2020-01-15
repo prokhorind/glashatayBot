@@ -10,25 +10,43 @@ import ua.friends.telegram.bot.entity.UserChatPreferences;
 import ua.friends.telegram.bot.service.UserToChatService;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class UnbanCommand implements Command {
     private UserToChatService userToChatService = new UserToChatService();
+    private Logger logger = Logger.getLogger(UnbanCommand.class.getName());
 
     @Override
     public SendMessage executeCommand(Update update) {
+        logger.info("Start unban");
         String login = update.getMessage().getFrom().getUserName();
         int tgId = update.getMessage().getFrom().getId();
         long chatId = update.getMessage().getChatId();
         User user = userToChatService.getUser(tgId, chatId);
         List<UserChatPreferences> bpList = user.getUserChatPreferences();
-        Optional<UserChatPreferences> oBp = bpList.stream().filter(u -> userToChatService.isBanned(tgId, chatId)).findAny();
+        Optional<UserChatPreferences> oBp = bpList.stream().filter(u -> u.getChat().getChatId() == chatId).findAny();
         if (oBp.isPresent()) {
             BanChatPreferences bp = (BanChatPreferences) oBp.get();
-            if (bp.getToBan().compareTo(LocalDateTime.now()) <= 0) {
-                userToChatService.unBan(tgId, chatId);
-                return MessageUtils.generateMessage(chatId, login + " разбанен");
+            if (bp.isHasBan()) {
+                logger.info("Find user for unban:" + user.getTgId());
+                LocalDateTime dateTime = LocalDateTime.now();
+                // setting UTC as the timezone
+                ZonedDateTime zonedUTC = dateTime.atZone(ZoneId.of("UTC"));
+
+                logger.info("BanChatPreferences:" + bp.toString());
+                LocalDateTime banTime = bp.getToBan();
+                LocalDateTime currentZonedTine = zonedUTC.toLocalDateTime();
+                logger.info("BANTIME:" + banTime);
+                logger.info("DATETIMESERVE:" + currentZonedTine);
+                logger.info("BANTIME COMPARE TO CURRZONETIME:" + banTime.compareTo(currentZonedTine));
+                if (banTime.compareTo(currentZonedTine) <= 0) {
+                    userToChatService.unBan(tgId, chatId);
+                    return MessageUtils.generateMessage(chatId, login + " разбанен");
+                }
             }
         }
         return null;
