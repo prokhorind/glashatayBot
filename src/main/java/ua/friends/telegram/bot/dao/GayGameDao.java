@@ -9,6 +9,8 @@ import ua.friends.telegram.bot.entity.GayGame;
 import ua.friends.telegram.bot.entity.User;
 
 import javax.persistence.NoResultException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -54,6 +56,28 @@ public class GayGameDao {
             }
             logger.warning(e.getMessage());
             return Optional.empty();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<GayGame> find(long chatId, int year) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            Query query = session.createQuery("SELECT g FROM GayGame as g WHERE g.chat.chatId = :chatId AND g.year = :year  ");
+            query.setParameter("chatId", chatId);
+            query.setParameter("year", year);
+            List<GayGame> gayGame = query.getResultList();
+            session.flush();
+            tx.commit();
+            return gayGame;
+        } catch (NoResultException e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+            return Collections.EMPTY_LIST;
         } finally {
             session.close();
         }

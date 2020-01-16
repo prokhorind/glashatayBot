@@ -6,6 +6,7 @@ import ua.friends.telegram.bot.entity.GayGame;
 import ua.friends.telegram.bot.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public class GayGameService {
@@ -22,6 +23,10 @@ public class GayGameService {
 
     public Optional<GayGame> find(int userTgId, long chatId, int year) {
         return gayGameDao.find(userTgId, chatId, year);
+    }
+
+    public List<GayGame> find(long chatId, int year) {
+        return gayGameDao.find(chatId, year);
     }
 
     public void updateGameStats(Chat chat, User user) {

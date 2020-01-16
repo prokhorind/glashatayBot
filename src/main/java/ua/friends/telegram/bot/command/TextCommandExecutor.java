@@ -21,6 +21,7 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.PUNCH, new PunchCommand());
         commandMap.put(Endpoint.TGID, new UserIdCommand());
         commandMap.put(Endpoint.RATMSG, new RatMessageCommand());
+        commandMap.put(Endpoint.STAT, new GayStatCommand());
     }
 
     public BotApiMethod execute(Endpoint endpoint, Update update) {
