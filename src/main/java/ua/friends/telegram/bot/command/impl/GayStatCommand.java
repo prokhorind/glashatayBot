@@ -16,9 +16,23 @@ public class GayStatCommand implements Command {
 
     @Override
     public SendMessage executeCommand(Update update) {
+        String[] command = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
-        List<GayGame> gayGameList = gayGameService.find(chatId, LocalDateTime.now().getYear());
+        int year;
+        if (command.length == 2) {
+            try {
+                year = Integer.valueOf(command[1]);
+            } catch (NumberFormatException e) {
+                year = LocalDateTime.now().getYear();
+            }
+        } else {
+            year = LocalDateTime.now().getYear();
+        }
+        List<GayGame> gayGameList = gayGameService.find(chatId, year);
+        if (gayGameList.isEmpty()) {
+          return MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов");
+        }
         gayGameList.forEach(g -> buildMessage(sb, g));
         return MessageUtils.generateMessage(chatId, sb.toString());
     }
