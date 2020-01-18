@@ -69,4 +69,15 @@ public class GayGame implements Serializable {
     public void setCount(int count) {
         this.count = count;
     }
+
+    @Override
+    public String toString() {
+        return "GayGame{" +
+                "gayGameId=" + gayGameId +
+                ", user=" + user +
+                ", chat=" + chat +
+                ", year=" + year +
+                ", count=" + count +
+                '}';
+    }
 }

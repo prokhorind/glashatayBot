@@ -22,7 +22,7 @@ public class HibernateUtil {
                 settings.put(Environment.USER, System.getenv("DB_USER"));
                 settings.put(Environment.PASS, System.getenv("DB_PASS"));
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL94Dialect");
-                settings.put(Environment.SHOW_SQL, "true");
+                settings.put(Environment.SHOW_SQL, "false");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 settings.put(Environment.HBM2DDL_AUTO, "update");
                 configuration.setProperties(settings);

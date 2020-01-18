@@ -31,14 +31,22 @@ public class GayStatCommand implements Command {
         }
         List<GayGame> gayGameList = gayGameService.find(chatId, year);
         if (gayGameList.isEmpty()) {
-          return MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов");
+            return MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов");
         }
+        addHeader(sb, year);
         gayGameList.forEach(g -> buildMessage(sb, g));
         return MessageUtils.generateMessage(chatId, sb.toString());
     }
 
+    private void addHeader(StringBuilder sb, int year) {
+        sb.append("Результаты за ");
+        sb.append(year);
+        sb.append(" год");
+        sb.append("\n");
+    }
+
     private void buildMessage(StringBuilder sb, GayGame game) {
-        sb.append(TelegramNameUtils.findName(game.getUser()));
+        sb.append(TelegramNameUtils.findName(game.getUser()).replaceFirst("@", ""));
         sb.append(":");
         sb.append(game.getCount());
         sb.append("\n");

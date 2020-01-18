@@ -1,5 +1,6 @@
 package ua.friends.telegram.bot.service;
 
+import ua.friends.telegram.bot.command.impl.BanCommand;
 import ua.friends.telegram.bot.dao.GayGameDao;
 import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.entity.GayGame;
@@ -8,9 +9,11 @@ import ua.friends.telegram.bot.entity.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class GayGameService {
 
+    private Logger logger = Logger.getLogger(BanCommand.class.getName());
     private GayGameDao gayGameDao = new GayGameDao();
 
     public void reg(User user, Chat chat) {
@@ -38,6 +41,7 @@ public class GayGameService {
         } else {
             gayGame = optionalGayGame.get();
         }
+        logger.info("Gay game:" + gayGame.toString());
         int newCount = gayGame.getCount() + 1;
         gayGame.setCount(newCount);
         gayGameDao.save(gayGame);

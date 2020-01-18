@@ -5,8 +5,8 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.friends.telegram.bot.GlashatayBot;
+import ua.friends.telegram.bot.command.impl.BanCommand;
 import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.CronInfoService;
@@ -17,10 +17,13 @@ import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @DisallowConcurrentExecution
 public class GayJob implements Job {
+
+    private Logger logger = Logger.getLogger(BanCommand.class.getName());
 
     private GlashatayBot bot;
     private UserToChatService userToChatService = new UserToChatService();
@@ -41,8 +44,8 @@ public class GayJob implements Job {
             gayGameService.updateGameStats(chat, user);
             bot.executeFromCron(chat.getChatId(), createMessage(user));
             cronInfoService.updateCronInfo(chat);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
         }
     }
 

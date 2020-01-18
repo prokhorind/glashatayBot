@@ -90,8 +90,11 @@ public class GayGameDao {
             session.saveOrUpdate(gayGame);
             session.flush();
             tx.commit();
+            logger.info("Gay game was saved:" + gayGame.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
             logger.warning(e.getMessage());
         } finally {
             session.close();
