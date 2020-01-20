@@ -9,7 +9,7 @@ public class GayJobCreator {
     public static final String GAY_JOB = "gayJob";
     public static final String GROUP = "group1";
     public static final String TRIGGER = "trigger";
-    public static final String CRON_EXPRESSION = "0 0 1 * * ? *";
+    public static final String CRON_EXPRESSION = "0 50 23 ? * * *";
 
     private Scheduler scheduler;
     private GlashatayBot glashatayBot;

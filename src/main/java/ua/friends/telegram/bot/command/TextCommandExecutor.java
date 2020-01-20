@@ -14,7 +14,7 @@ public class TextCommandExecutor {
     public TextCommandExecutor() {
         commandMap.put(Endpoint.SAY, new GlashatayCommand());
         commandMap.put(Endpoint.INVALID, new InvalidMessageCommand());
-        commandMap.put(Endpoint.DELETE,new DeleteMessageCommand());
+        commandMap.put(Endpoint.DELETE, new DeleteMessageCommand());
         commandMap.put(Endpoint.PIDORREG, new GayRegCommand());
         commandMap.put(Endpoint.PIDORDEL, new GayRemoveCommand());
         commandMap.put(Endpoint.BAN, new BanCommand());
@@ -22,11 +22,12 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.TGID, new UserIdCommand());
         commandMap.put(Endpoint.RATMSG, new RatMessageCommand());
         commandMap.put(Endpoint.STAT, new GayStatCommand());
+        commandMap.put(Endpoint.GAYTODAY, new GayChooseCommand());
     }
 
     public BotApiMethod execute(Endpoint endpoint, Update update) {
-            Command command = commandMap.get(endpoint);
-            BotApiMethod message = command.executeCommand(update);
-            return message;
+        Command command = commandMap.get(endpoint);
+        BotApiMethod message = command.executeCommand(update);
+        return message;
     }
 }

@@ -6,13 +6,15 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
+import static java.lang.Boolean.TRUE;
+
 public class PunchCommand implements Command {
 
     public static final String SET_NAME = "Укажи имя";
 
     @Override
     public BotApiMethod executeCommand(Update update) {
-        String from = TelegramNameUtils.findName(update);
+        String from = TelegramNameUtils.findName(update, TRUE);
         String[] params = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
 

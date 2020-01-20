@@ -19,7 +19,7 @@ public class GlashatayCommand implements Command {
     private String buildMessage(Update update) {
         String text = update.getMessage().getText().split(" ",2)[1];
         StringBuilder sb = new StringBuilder();
-        sb.append(findName(update));
+        sb.append(findName(update, Boolean.TRUE));
         sb.append(" ");
         sb.append(WordsCollection.getRandomWord());
         sb.append(" ");

@@ -21,6 +21,8 @@ public class CronInfo implements Serializable {
     private LocalDateTime lastUsage;
     @Column
     private String cronName;
+    @Column
+    private String gayName;
 
     public CronInfo() {
     }
@@ -59,5 +61,13 @@ public class CronInfo implements Serializable {
 
     public void setCronName(String cronName) {
         this.cronName = cronName;
+    }
+
+    public String getGayName() {
+        return gayName;
+    }
+
+    public void setGayName(String gayName) {
+        this.gayName = gayName;
     }
 }

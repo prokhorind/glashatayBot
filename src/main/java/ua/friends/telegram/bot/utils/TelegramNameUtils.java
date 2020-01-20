@@ -5,30 +5,33 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 public class TelegramNameUtils {
 
-    public static String findName(Update update) {
+    public static String findName(Update update, boolean hasAtSign) {
         User user = update.getMessage().getFrom();
-        return findName(user);
+        return findName(user, hasAtSign);
     }
 
-    public static String findName(User user) {
+    public static String findName(User user, boolean hasAtSign) {
         String userName = user.getUserName();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        if (userName != null && !userName.isEmpty()) {
-            return String.format("%s%s", "@", userName);
-        } else if (isFirstsnameOrLastnameNotEmpty(firstName, lastName)) {
-            return String.format("%s %s", setEmptyIfNull(firstName), setEmptyIfNull(lastName));
-        } else {
-            return "Annonymous";
-        }
+        return getName(hasAtSign, userName, firstName, lastName);
     }
 
-    public static String findName(ua.friends.telegram.bot.entity.User user) {
+
+    public static String findName(ua.friends.telegram.bot.entity.User user, boolean hasAtSign) {
         String userName = user.getLogin();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
+        return getName(hasAtSign, userName, firstName, lastName);
+    }
+
+    private static String getName(boolean hasAtSign, String userName, String firstName, String lastName) {
         if (userName != null && !userName.isEmpty()) {
-            return String.format("%s%s", "@", userName);
+            if (hasAtSign) {
+                return String.format("%s%s", "@", userName);
+            } else {
+                return userName;
+            }
         } else if (isFirstsnameOrLastnameNotEmpty(firstName, lastName)) {
             return String.format("%s %s", setEmptyIfNull(firstName), setEmptyIfNull(lastName));
         } else {

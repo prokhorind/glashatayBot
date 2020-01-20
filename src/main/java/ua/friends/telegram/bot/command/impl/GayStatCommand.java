@@ -46,7 +46,7 @@ public class GayStatCommand implements Command {
     }
 
     private void buildMessage(StringBuilder sb, GayGame game) {
-        sb.append(TelegramNameUtils.findName(game.getUser()).replaceFirst("@", ""));
+        sb.append(TelegramNameUtils.findName(game.getUser(), false));
         sb.append(":");
         sb.append(game.getCount());
         sb.append("\n");
