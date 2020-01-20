@@ -5,8 +5,11 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import ua.friends.telegram.bot.cron.gaycron.GayJobCreator;
 
+import java.util.TimeZone;
+
 public class Main {
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Kiev"));
         // Initialize Api Context
         ApiContextInitializer.init();
         // Instantiate Telegram Bots API
