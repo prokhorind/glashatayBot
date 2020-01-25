@@ -42,9 +42,9 @@ public class GayJob implements Job {
     private void updateGameChats(Pair<Chat, User> pair) {
         Chat chat = pair.first;
         User user = pair.second;
+        gayGameService.setCronInfoService(cronInfoService);
         if (!gayGameService.getCronInfoForCurrentDay(chat).isPresent()) {
             try {
-                gayGameService.setCronInfoService(cronInfoService);
                 gayGameService.updateGameStats(chat, user);
                 bot.executeFromCron(chat.getChatId(), createMessage(user));
                 cronInfoService.updateCronInfo(chat, user);

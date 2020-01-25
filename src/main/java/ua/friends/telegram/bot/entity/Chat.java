@@ -86,4 +86,11 @@ public class Chat implements Serializable {
     public void setCronInfos(Set<CronInfo> cronInfos) {
         this.cronInfos = cronInfos;
     }
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "chatId=" + chatId +
+                '}';
+    }
 }

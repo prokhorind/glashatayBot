@@ -70,4 +70,13 @@ public class CronInfo implements Serializable {
     public void setGayName(String gayName) {
         this.gayName = gayName;
     }
+
+    @Override
+    public String toString() {
+        return "CronInfo{" +
+                "chat=" + chat +
+                ", lastUsage=" + lastUsage +
+                ", gayName='" + gayName + '\'' +
+                '}';
+    }
 }
