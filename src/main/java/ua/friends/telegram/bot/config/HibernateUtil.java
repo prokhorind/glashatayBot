@@ -32,6 +32,8 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(BanChatPreferences.class);
                 configuration.addAnnotatedClass(GayGame.class);
                 configuration.addAnnotatedClass(CronInfo.class);
+                configuration.addAnnotatedClass(Sentence.class);
+                configuration.addAnnotatedClass(Phrase.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);

@@ -91,8 +91,8 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private boolean canUnBan(Update update) {
-        SendMessage msg = new UnbanCommand().executeCommand(update);
-        return !Objects.isNull(msg);
+        List<SendMessage> msgs = new UnbanCommand().executeCommand(update);
+        return Objects.nonNull(msgs) && msgs.size() > 0;
     }
 
 
@@ -114,9 +114,11 @@ public class GlashatayBot extends TelegramLongPollingBot {
 
     private void execute(Update update, Endpoint endpoint) {
         TextCommandExecutor textCommandExecutor = new TextCommandExecutor();
-        BotApiMethod message = textCommandExecutor.execute(endpoint, update);
+        List<BotApiMethod> messages = textCommandExecutor.execute(endpoint, update);
         try {
-            execute(message);
+            for (BotApiMethod message : messages) {
+                execute(message);
+            }
         } catch (TelegramApiException e) {
             logger.warning(e.getMessage());
             e.printStackTrace();
@@ -128,10 +130,10 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     public String getBotUsername() {
-        return System.getenv("BOT_USERNAME");
+        return "Glashatay_Bot";
     }
 
     public String getBotToken() {
-        return System.getenv("BOT_TOKEN");
+        return "1052056344:AAE8nIgITokulQiG8UxUP0EKLvn9rlR7Aiw";
     }
 }

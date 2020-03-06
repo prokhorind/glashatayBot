@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.friends.telegram.bot.command.impl.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TextCommandExecutor {
@@ -23,11 +24,18 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.RATMSG, new RatMessageCommand());
         commandMap.put(Endpoint.STAT, new GayStatCommand());
         commandMap.put(Endpoint.GAYTODAY, new GayChooseCommand());
+        commandMap.put(Endpoint.ADDPHRASE, new AddPhraseCommand());
+        commandMap.put(Endpoint.SHOWPHRASES, new ShowUserPhrasesCommand());
+        commandMap.put(Endpoint.REMPHRASE, new RemovePhraseCommand());
     }
 
-    public BotApiMethod execute(Endpoint endpoint, Update update) {
+    public static Map<Endpoint, Command> getCommandMap() {
+        return commandMap;
+    }
+
+    public List<BotApiMethod> execute(Endpoint endpoint, Update update) {
         Command command = commandMap.get(endpoint);
-        BotApiMethod message = command.executeCommand(update);
-        return message;
+        List<BotApiMethod> messages = command.executeCommand(update);
+        return messages;
     }
 }

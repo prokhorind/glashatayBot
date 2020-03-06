@@ -12,6 +12,7 @@ import ua.friends.telegram.bot.service.UserToChatService;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ public class UnbanCommand implements Command {
     private Logger logger = Logger.getLogger(UnbanCommand.class.getName());
 
     @Override
-    public SendMessage executeCommand(Update update) {
+    public List<SendMessage> executeCommand(Update update) {
         logger.info("Start unban");
         String login = update.getMessage().getFrom().getUserName();
         int tgId = update.getMessage().getFrom().getId();
@@ -45,7 +46,7 @@ public class UnbanCommand implements Command {
                 logger.info("BANTIME COMPARE TO CURRZONETIME:" + banTime.compareTo(currentZonedTine));
                 if (banTime.compareTo(currentZonedTine) <= 0) {
                     userToChatService.unBan(tgId, chatId);
-                    return MessageUtils.generateMessage(chatId, login + " разбанен");
+                    return Collections.singletonList(MessageUtils.generateMessage(chatId, login + " разбанен"));
                 }
             }
         }

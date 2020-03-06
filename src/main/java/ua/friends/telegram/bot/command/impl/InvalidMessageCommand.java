@@ -6,10 +6,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 
+import java.util.Collections;
+import java.util.List;
+
 public class InvalidMessageCommand implements Command {
     private static final String INVALID_COMMAND = "Invalid command";
+
     @Override
-    public SendMessage executeCommand(Update update) {
-        return MessageUtils.generateMessage(update.getMessage().getChatId(),INVALID_COMMAND);
+    public List<SendMessage> executeCommand(Update update) {
+        return Collections.singletonList(MessageUtils.generateMessage(update.getMessage().getChatId(), INVALID_COMMAND));
     }
 }

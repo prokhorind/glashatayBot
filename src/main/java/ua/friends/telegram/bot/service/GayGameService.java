@@ -80,6 +80,7 @@ public class GayGameService {
     }
 
     private boolean isDaysEquals(LocalDateTime lastUsed, LocalDateTime serverTime) {
+
         return lastUsed.getYear() == serverTime.getYear() && lastUsed.getMonth().getValue() == serverTime.getMonth().getValue() && lastUsed.getDayOfWeek().getValue() == serverTime.getDayOfWeek().getValue();
     }
 

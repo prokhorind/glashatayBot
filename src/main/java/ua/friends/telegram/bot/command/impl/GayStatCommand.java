@@ -9,13 +9,14 @@ import ua.friends.telegram.bot.service.GayGameService;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 public class GayStatCommand implements Command {
     private GayGameService gayGameService = new GayGameService();
 
     @Override
-    public SendMessage executeCommand(Update update) {
+    public List<SendMessage> executeCommand(Update update) {
         String[] command = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
@@ -31,11 +32,11 @@ public class GayStatCommand implements Command {
         }
         List<GayGame> gayGameList = gayGameService.find(chatId, year);
         if (gayGameList.isEmpty()) {
-            return MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов");
+            return Collections.singletonList(MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов"));
         }
         addHeader(sb, year);
         gayGameList.forEach(g -> buildMessage(sb, g));
-        return MessageUtils.generateMessage(chatId, sb.toString());
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString()));
     }
 
     private void addHeader(StringBuilder sb, int year) {

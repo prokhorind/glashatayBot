@@ -12,6 +12,8 @@ import ua.friends.telegram.bot.service.CronInfoService;
 import ua.friends.telegram.bot.service.GayGameService;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Boolean.TRUE;
@@ -23,7 +25,7 @@ public class GayChooseCommand implements Command {
     private CronInfoService cronInfoService = new CronInfoService();
 
     @Override
-    public SendMessage executeCommand(Update update) {
+    public List<SendMessage> executeCommand(Update update) {
         long chatId = update.getMessage().getChatId();
         Chat chat = chatService.find(chatId).get();
         gayGameService.setCronInfoService(cronInfoService);
@@ -33,9 +35,9 @@ public class GayChooseCommand implements Command {
             gayGameService.setCronInfoService(cronInfoService);
             gayGameService.updateGameStats(chat, user);
             cronInfoService.updateCronInfo(chat, user);
-            return MessageUtils.generateMessage(chatId, createMessage(user));
+            return Collections.singletonList(MessageUtils.generateMessage(chatId, createMessage(user)));
         }
-        return MessageUtils.generateMessage(chatId, "Пидор дня уже выбран:" + optionalCronInfo.get().getGayName());
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, "Пидор дня уже выбран:" + optionalCronInfo.get().getGayName()));
     }
 
     private String createMessage(User user) {

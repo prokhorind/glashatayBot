@@ -10,6 +10,8 @@ import ua.friends.telegram.bot.service.ChatService;
 import ua.friends.telegram.bot.service.GayGameService;
 import ua.friends.telegram.bot.service.UserService;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,7 @@ public class GayRegCommand implements Command {
     private Logger logger = Logger.getLogger(GayRegCommand.class.getName());
 
     @Override
-    public SendMessage executeCommand(Update update) {
+    public List<SendMessage> executeCommand(Update update) {
         logger.info("GayRegCommandStarted");
         long chatId = update.getMessage().getChatId();
         int tgId = update.getMessage().getFrom().getId();
@@ -31,9 +33,9 @@ public class GayRegCommand implements Command {
         Chat chat = chatService.find(chatId).get();
 
         if (user.getGayChats().stream().map(a -> a.getChatId()).collect(Collectors.toSet()).contains(chatId)) {
-            return MessageUtils.generateMessage(update.getMessage().getChatId(), String.format("%s %s", user.getLogin(), MESSAGE));
+            return Collections.singletonList(MessageUtils.generateMessage(update.getMessage().getChatId(), String.format("%s %s", user.getLogin(), MESSAGE)));
         }
         gayGameService.reg(user, chat);
-        return MessageUtils.generateMessage(update.getMessage().getChatId(), String.format("%s %s", user.getLogin(), SUCCESS_MESSAGE));
+        return Collections.singletonList(MessageUtils.generateMessage(update.getMessage().getChatId(), String.format("%s %s", user.getLogin(), SUCCESS_MESSAGE)));
     }
 }
