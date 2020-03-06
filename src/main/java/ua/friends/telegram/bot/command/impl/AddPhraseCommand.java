@@ -20,10 +20,10 @@ public class AddPhraseCommand implements Command {
     public List<BotApiMethod> executeCommand(Update update) {
         long chatId = update.getMessage().getChatId();
         int tgId = update.getMessage().getFrom().getId();
-        String text = update.getMessage().getText().trim().split(" ")[1];
+        String text = update.getMessage().getText().trim().split(" ", 2)[1];
         String[] sentences = text.split("&");
 
-        if (phraseService.count(tgId) >= 5) {
+        if (phraseService.count(Collections.singletonList(tgId)) >= 5) {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 5 фраз от одного пользователя"));
         }
 

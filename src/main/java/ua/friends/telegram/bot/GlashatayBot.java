@@ -118,10 +118,15 @@ public class GlashatayBot extends TelegramLongPollingBot {
         try {
             for (BotApiMethod message : messages) {
                 execute(message);
+                if (Endpoint.GAYTODAY.equals(endpoint)) {
+                    Thread.sleep(2000);
+                }
             }
         } catch (TelegramApiException e) {
             logger.warning(e.getMessage());
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            logger.warning(e.getMessage());
         }
     }
 

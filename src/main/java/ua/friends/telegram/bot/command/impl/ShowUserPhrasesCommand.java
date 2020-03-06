@@ -19,7 +19,7 @@ public class ShowUserPhrasesCommand implements Command {
     public List<SendMessage> executeCommand(Update update) {
         int userId = update.getMessage().getFrom().getId();
         long chatId = update.getMessage().getChatId();
-        List<Phrase> phrases = phraseService.getUserPhrases(userId);
+        List<Phrase> phrases = phraseService.getUserPhrases(Collections.singletonList(userId));
 
         if (phrases == null || phrases.isEmpty()) {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, String.format("%s %s", TelegramNameUtils.findName(update, false), "не создал своих фраз")));

@@ -45,12 +45,16 @@ public class PhraseService {
         sentenceDao.save(sentences);
     }
 
-    public int count(int tgId) {
+    public int count(List<Integer> tgId) {
         return getUserPhrases(tgId).size();
     }
 
-    public List<Phrase> getUserPhrases(int tgId) {
-        return phraseDao.getUsersPhrasesByUserIds(Collections.singletonList(tgId));
+    public List<Phrase> getUserPhrases(List<Integer> tgId) {
+        return phraseDao.getUsersPhrasesByUserIds(tgId);
+    }
+
+    public Phrase getRandomPhrase(List<Integer> userIds) {
+        return phraseDao.getRandomPhrase(userIds);
     }
 
     private Sentence create(String snt, Phrase phrase) {

@@ -58,6 +58,30 @@ public class PhraseDao {
         }
     }
 
+    public Phrase getRandomPhrase(List<Integer> userIds) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            Query query = session.createQuery("from Phrase where authorTgId in (:userIds) order by rand()");
+            query.setMaxResults(1);
+            query.setParameterList("userIds", userIds);
+            tx = session.beginTransaction();
+            Phrase result = (Phrase) query.getSingleResult();
+            session.flush();
+            tx.commit();
+            logger.info(String.format("%s %s", "was returned", result.toString()));
+            return result;
+        } catch (NoResultException e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
     public List<Phrase> getUsersPhrasesByPhraseIds(List<Integer> phraseIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
