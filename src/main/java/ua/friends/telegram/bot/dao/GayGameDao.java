@@ -65,7 +65,7 @@ public class GayGameDao {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
-            Query query = session.createQuery("SELECT g FROM GayGame as g WHERE g.chat.chatId = :chatId AND g.year = :year  ");
+            Query query = session.createQuery("SELECT g FROM GayGame as g WHERE g.chat.chatId = :chatId AND g.year = :year  ORDER BY g.count DESC");
             query.setParameter("chatId", chatId);
             query.setParameter("year", year);
             List<GayGame> gayGame = query.getResultList();
