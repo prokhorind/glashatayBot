@@ -44,6 +44,6 @@ public class TelegramNameUtils {
     }
 
     private static String setEmptyIfNull(String firstName) {
-        return firstName == null ? "" : firstName;
+        return firstName == null || "NULL".equalsIgnoreCase(firstName) ? "" : firstName;
     }
 }
