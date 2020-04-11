@@ -17,7 +17,7 @@ public class GayGame implements Serializable {
             fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "chat_id")
     private Chat chat;
