@@ -45,6 +45,10 @@ public class GayGameService {
         return gayGameDao.find(chatId, year);
     }
 
+    public List<Object> find(long chatId) {
+        return gayGameDao.find(chatId);
+    }
+
     public void updateGameStats(Chat chat, User user, int count) {
         int currentYear = LocalDateTime.now().getYear();
         Optional<GayGame> optionalGayGame = find(user.getTgId(), chat.getChatId(), currentYear);

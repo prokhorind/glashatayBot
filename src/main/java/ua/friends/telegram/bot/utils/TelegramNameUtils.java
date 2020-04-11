@@ -17,6 +17,10 @@ public class TelegramNameUtils {
         return getName(hasAtSign, userName, firstName, lastName);
     }
 
+    public static String findName(String userName, String firstName, String lastName, boolean hasAtSign) {
+        return getName(hasAtSign, userName, firstName, lastName);
+    }
+
 
     public static String findName(ua.friends.telegram.bot.entity.User user, boolean hasAtSign) {
         String userName = user.getLogin();

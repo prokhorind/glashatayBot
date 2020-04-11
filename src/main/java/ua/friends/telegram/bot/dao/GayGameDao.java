@@ -83,6 +83,28 @@ public class GayGameDao {
         }
     }
 
+    public List<Object> find(long chatId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            Query query = session.createQuery("SELECT g.user.tgId, g.user.login, g.user.firstName, g.user.lastName ,SUM(g.count)  FROM GayGame as g WHERE g.chat.chatId = :chatId " +
+                    "GROUP BY g.user.tgId, g.user.login, g.user.firstName, g.user.lastName  ORDER BY sum(g.count) DESC");
+            query.setParameter("chatId", chatId);
+            List<Object> gayGame = query.getResultList();
+            session.flush();
+            tx.commit();
+            return gayGame;
+        } catch (NoResultException e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+            return Collections.EMPTY_LIST;
+        } finally {
+            session.close();
+        }
+    }
+
     public void saveOrUpdate(GayGame gayGame) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();

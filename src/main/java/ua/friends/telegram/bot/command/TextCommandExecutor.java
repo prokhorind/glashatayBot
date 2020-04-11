@@ -28,6 +28,7 @@ public class TextCommandExecutor {
         commandMap.put(Endpoint.SHOWPHRASES, new ShowUserPhrasesCommand());
         commandMap.put(Endpoint.REMPHRASE, new RemovePhraseCommand());
         commandMap.put(Endpoint.IMPORT, new ImportGayGameStatsCommand());
+        commandMap.put(Endpoint.ALLSTAT, new FullGayGameStatsCommand());
     }
 
     public static Map<Endpoint, Command> getCommandMap() {
