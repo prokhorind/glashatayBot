@@ -7,6 +7,7 @@ import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.UserService;
 import ua.friends.telegram.bot.service.UserToChatService;
+import ua.friends.telegram.bot.utils.AdminUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +25,7 @@ public class BanCommand implements Command {
     public List<SendMessage> executeCommand(Update update) {
 
         logger.info("Start ban command");
-        if (!isUserHasRights(update)) {
+        if (!AdminUtils.isUserHasRights(update)) {
             return Collections.singletonList(MessageUtils.generateMessage(update.getMessage().getChatId(), "Соси " + update.getMessage().getFrom().getUserName()));
         }
         String[] vars = update.getMessage().getText().split(" ", 3);
@@ -51,8 +52,4 @@ public class BanCommand implements Command {
         return Collections.singletonList(MessageUtils.generateMessage(update.getMessage().getChatId(), "Забанен"));
     }
 
-    private boolean isUserHasRights(Update update) {
-        String login = update.getMessage().getFrom().getUserName();
-        return "prokhorind".equalsIgnoreCase(login);
-    }
 }

@@ -32,7 +32,7 @@ public class GayChooseCommand implements Command {
         if (!optionalCronInfo.isPresent()) {
             User user = GayGameService.chooseGayUser(chat);
             gayGameService.setCronInfoService(cronInfoService);
-            gayGameService.updateGameStats(chat, user);
+            gayGameService.updateGameStats(chat, user, 1);
             cronInfoService.updateCronInfo(chat, user);
             return createMessages(user, chat);
         }

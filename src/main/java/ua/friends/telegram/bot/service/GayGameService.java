@@ -45,7 +45,7 @@ public class GayGameService {
         return gayGameDao.find(chatId, year);
     }
 
-    public void updateGameStats(Chat chat, User user) {
+    public void updateGameStats(Chat chat, User user, int count) {
         int currentYear = LocalDateTime.now().getYear();
         Optional<GayGame> optionalGayGame = find(user.getTgId(), chat.getChatId(), currentYear);
         GayGame gayGame = null;
@@ -55,8 +55,28 @@ public class GayGameService {
             gayGame = optionalGayGame.get();
         }
         logger.info("Gay game:" + gayGame.toString());
-        int newCount = gayGame.getCount() + 1;
+        int newCount = gayGame.getCount() + count;
         gayGame.setCount(newCount);
+        gayGameDao.saveOrUpdate(gayGame);
+    }
+
+    public void saveOrUpdate(GayGame gayGame) {
+        gayGameDao.saveOrUpdate(gayGame);
+    }
+
+    public void merge(GayGame gayGame) {
+        gayGameDao.merge(gayGame);
+    }
+
+    public void persist(GayGame gayGame) {
+        gayGameDao.persisted(gayGame);
+    }
+
+    public void update(GayGame gayGame) {
+        gayGameDao.update(gayGame);
+    }
+
+    public void save(GayGame gayGame) {
         gayGameDao.save(gayGame);
     }
 

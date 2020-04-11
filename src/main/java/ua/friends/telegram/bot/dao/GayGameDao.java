@@ -83,7 +83,7 @@ public class GayGameDao {
         }
     }
 
-    public void save(GayGame gayGame) {
+    public void saveOrUpdate(GayGame gayGame) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
@@ -91,6 +91,78 @@ public class GayGameDao {
             session.flush();
             tx.commit();
             logger.info("Gay game was saved:" + gayGame.toString());
+        } catch (Exception e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    public void persisted(GayGame gayGame) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.persist(gayGame);
+            session.flush();
+            tx.commit();
+            logger.info("Gay game was persisted:" + gayGame.toString());
+        } catch (Exception e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    public void merge(GayGame gayGame) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.merge(gayGame);
+            session.flush();
+            tx.commit();
+            logger.info("Gay game was merged:" + gayGame.toString());
+        } catch (Exception e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    public void save(GayGame gayGame) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.merge(gayGame);
+            session.flush();
+            tx.commit();
+            logger.info("Gay game was saved:" + gayGame.toString());
+        } catch (Exception e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    public void update(GayGame gayGame) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.update(gayGame);
+            session.flush();
+            tx.commit();
+            logger.info("Gay game was updated:" + gayGame.toString());
         } catch (Exception e) {
             if (Objects.nonNull(tx)) {
                 tx.rollback();

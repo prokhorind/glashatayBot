@@ -29,7 +29,7 @@ public class UserDao {
             session.flush();
             tx.commit();
             session.close();
-            logger.info("User was found:" + user.getTgId());
+            logger.config("User was found:" + user.getTgId());
             return Optional.of(user);
         } catch (NoResultException e) {
             if (Objects.nonNull(tx)) {

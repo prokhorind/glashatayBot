@@ -11,6 +11,7 @@ import ua.friends.telegram.bot.command.TextCommandExecutor;
 import ua.friends.telegram.bot.command.impl.UnbanCommand;
 import ua.friends.telegram.bot.data.MessageData;
 import ua.friends.telegram.bot.service.UserToChatService;
+import ua.friends.telegram.bot.utils.AdminUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,7 +69,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processLoginChange(Message message, MessageData messageData) {
-        logger.info("Try to process login change:" + messageData.getUserTgId());
+        logger.config("Try to process login change:" + messageData.getUserTgId());
         if (userToChatService.isUserChangeLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName())) {
             userToChatService.updateUserLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName());
         }
@@ -101,7 +102,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processCommands(Update update, Endpoint endpoint) {
-        logger.info("Try to process endpoint:" + endpoint);
+        logger.config("Try to process endpoint:" + endpoint);
         if (Endpoint.INVALID.equals(endpoint)) {
             return;
         }
@@ -135,10 +136,10 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     public String getBotUsername() {
-        return "Glashatay_Bot";
+        return AdminUtils.getBotUsername();
     }
 
     public String getBotToken() {
-        return "1052056344:AAE8nIgITokulQiG8UxUP0EKLvn9rlR7Aiw";
+        return AdminUtils.getBotToken();
     }
 }
