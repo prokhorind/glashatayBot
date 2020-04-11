@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GayStatCommand implements Command {
+    public static final int OLD_VALUE_YEAR = 2019;
     private GayGameService gayGameService = new GayGameService();
 
     @Override
@@ -24,6 +25,9 @@ public class GayStatCommand implements Command {
         if (command.length == 2) {
             try {
                 year = Integer.valueOf(command[1]);
+                if (year < OLD_VALUE_YEAR) {
+                    year = OLD_VALUE_YEAR;
+                }
             } catch (NumberFormatException e) {
                 year = LocalDateTime.now().getYear();
             }
@@ -34,17 +38,24 @@ public class GayStatCommand implements Command {
         if (gayGameList.isEmpty()) {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов"));
         }
-        addHeader(sb, year);
+
+        createHeader(sb, year);
         gayGameList.forEach(g -> buildMessage(sb, g));
         return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString()));
     }
 
-    private void addHeader(StringBuilder sb, int year) {
-        sb.append("Результаты за ");
-        sb.append(year);
-        sb.append(" год");
-        sb.append("\n");
+    private void createHeader(StringBuilder sb, int year) {
+        if (year <= OLD_VALUE_YEAR) {
+            sb.append("Результаты до того как наебнулся старый пидор:");
+            sb.append("\n");
+        } else {
+            sb.append("Результаты за ");
+            sb.append(year);
+            sb.append(" год");
+            sb.append("\n");
+        }
     }
+
 
     private void buildMessage(StringBuilder sb, GayGame game) {
         sb.append(TelegramNameUtils.findName(game.getUser(), false));
