@@ -41,20 +41,20 @@ public class ImportGayGameStatsCommand implements Command {
         if (!optionalUser.isPresent()) {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "Пользователь с таким id не существует"));
         }
-        int newCount = 1;
+
         String message = "Была создана новая запись";
         Optional<GayGame> optionalGayGame = gayGameService.find(tgId, chatIdForGayGame, year);
         GayGame gayGame = null;
         if (optionalGayGame.isPresent()) {
             gayGame = optionalGayGame.get();
             int oldCount = gayGame.getCount();
-            newCount = oldCount + count;
+            int newCount = oldCount + count;
             gayGame.setCount(newCount);
             message = String.format("Стата обновлена с %d  на %d", oldCount, newCount);
             gayGameService.update(gayGame);
         } else {
             gayGame = new GayGame();
-            gayGame.setCount(newCount);
+            gayGame.setCount(count);
             gayGame.setYear(year);
             gayGame.setUser(optionalUser.get());
             gayGame.setChat(chatService.find(chatIdForGayGame).get());
