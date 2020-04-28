@@ -57,6 +57,10 @@ public class PhraseService {
         return phraseDao.getRandomPhrase(userIds);
     }
 
+    public Optional<Phrase> get(int userId, int phraseId) {
+        return phraseDao.getPhrase(userId, phraseId);
+    }
+
     private Sentence create(String snt, Phrase phrase) {
         Sentence sentence = new Sentence();
         sentence.setPhrase(phrase);

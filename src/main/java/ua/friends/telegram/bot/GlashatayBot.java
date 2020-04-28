@@ -51,7 +51,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processBan(Update update, MessageData messageData, Endpoint endpoint) {
-        logger.info("Try to process BAN for user:" + messageData.getUserTgId());
+        logger.config("Try to process BAN for user:" + messageData.getUserTgId());
         if (userToChatService.isBanned(messageData.getUserTgId(), messageData.getChatId()) && !isUserCanDoThisCommandWhileBanned(endpoint)) {
             logger.info("User banned:" + messageData.getUserTgId());
             if (!canUnBan(update)) {
@@ -62,7 +62,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
     }
 
     private void processNewData(Message message, MessageData messageData) {
-        logger.info("Try to process new data:" + messageData.getUserTgId());
+        logger.config("Try to process new data:" + messageData.getUserTgId());
         if (!userToChatService.isUserHasChat(messageData.getUserTgId(), messageData.getChatId())) {
             userToChatService.processUserAndChatInDb(message);
         }

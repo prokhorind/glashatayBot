@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class PhraseDao {
@@ -53,6 +54,30 @@ public class PhraseDao {
             }
             logger.warning(e.getMessage());
             return Collections.emptyList();
+        } finally {
+            session.close();
+        }
+    }
+
+    public Optional<Phrase> getPhrase(int userId, int phraseId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            Query query = session.createQuery("from Phrase where authorTgId = :userId and phraseId = :phraseId ");
+            query.setParameter("userId", userId);
+            query.setParameter("phraseId", phraseId);
+            tx = session.beginTransaction();
+            Phrase result = (Phrase) query.getSingleResult();
+            session.flush();
+            tx.commit();
+            logger.config(String.format("%s %s", "was returned", result));
+            return Optional.of(result);
+        } catch (Exception e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+            return Optional.empty();
         } finally {
             session.close();
         }
