@@ -6,6 +6,7 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.Phrase;
 import ua.friends.telegram.bot.service.PhraseService;
+import ua.friends.telegram.bot.utils.AdminUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,17 +24,17 @@ public class AddPhraseCommand implements Command {
         String text = update.getMessage().getText().trim().split(" ", 2)[1];
         String[] sentences = text.split("&");
 
-        if (phraseService.count(Collections.singletonList(tgId)) >= 5) {
-            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 5 фраз от одного пользователя"));
+        if (phraseService.count(Collections.singletonList(tgId)) >= 20 && !AdminUtils.isUserHasRights(update)) {
+            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 20 фраз от одного пользователя"));
         }
 
         if (sentences.length < 1 || sentences.length > 6) {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 5 предложений разделённых &"));
         }
 
-        boolean answer = Arrays.stream(sentences).allMatch(s -> s.length() < 200);
+        boolean answer = Arrays.stream(sentences).allMatch(s -> s.length() < 2000);
         if (!answer) {
-            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 200 символов в одном предложении"));
+            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 2000 символов в одном предложении"));
         }
 
         Optional<Phrase> optionalPhrase = phraseService.convert(sentences, tgId);
