@@ -43,17 +43,34 @@ public class GayChooseCommand implements Command {
         List<SendMessage> sendMessages = new ArrayList<>();
         Set<User> gayUsers = chat.getGayUsers();
         Phrase phrase = phraseService.getRandomPhrase(gayUsers.stream().map(User::getTgId).collect(Collectors.toList()));
-        StringBuilder sb = null;
+        String gayName = TelegramNameUtils.findName(user, TRUE);
+        boolean isPhraseDynamic = phrase.getPhraseType().equalsIgnoreCase(PhraseType.DYNAMIC.name());
+        boolean isPhraseCommon = phrase.getPhraseType().equalsIgnoreCase(PhraseType.COMMON.name());
         for (Sentence sentence : phrase.getSentences()) {
-            sb = new StringBuilder();
-            sb.append(sentence.getSentence());
-            sb.append("\n");
-            sendMessages.add(MessageUtils.generateMessage(chat.getChatId(), sb.toString()));
+            generateSentence(chat, sendMessages, gayName, isPhraseDynamic, sentence);
         }
-        sb = new StringBuilder();
-        sb.append("Пидор дня:");
-        sb.append(TelegramNameUtils.findName(user, TRUE));
-        sendMessages.add(MessageUtils.generateMessage(chat.getChatId(), sb.toString()));
+        if (isPhraseCommon) {
+            generateCommonEndMessage(chat, sendMessages, gayName);
+        }
         return sendMessages;
+    }
+
+    private void generateSentence(Chat chat, List<SendMessage> sendMessages, String gayName, boolean isPhraseDynamic, Sentence sentence) {
+        StringBuilder sb = new StringBuilder();
+        String snt = sentence.getSentence();
+        if (isPhraseDynamic) {
+            sb.append(snt.replaceAll("%gayname%", gayName));
+        } else {
+            sb.append(snt);
+        }
+        sb.append("\n");
+        sendMessages.add(MessageUtils.generateMessage(chat.getChatId(), sb.toString()));
+    }
+
+    private void generateCommonEndMessage(Chat chat, List<SendMessage> sendMessages, String gayName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Пидор дня:");
+        sb.append(gayName);
+        sendMessages.add(MessageUtils.generateMessage(chat.getChatId(), sb.toString()));
     }
 }

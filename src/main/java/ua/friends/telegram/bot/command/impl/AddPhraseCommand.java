@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.Phrase;
+import ua.friends.telegram.bot.entity.PhraseType;
 import ua.friends.telegram.bot.service.PhraseService;
 import ua.friends.telegram.bot.utils.AdminUtils;
 
@@ -39,8 +40,22 @@ public class AddPhraseCommand implements Command {
 
         Optional<Phrase> optionalPhrase = phraseService.convert(sentences, tgId);
         if (optionalPhrase.isPresent()) {
-            phraseService.save(optionalPhrase.get());
+            Phrase phrase = optionalPhrase.get();
+            setPhraseType(phrase);
+            phraseService.save(phrase);
         }
         return Collections.singletonList(MessageUtils.generateMessage(chatId, "Сохранено"));
+    }
+
+    private void setPhraseType(Phrase phrase) {
+        if (isDynamicPhrase(phrase)) {
+            phrase.setPhraseType(PhraseType.DYNAMIC.name());
+        } else {
+            phrase.setPhraseType(PhraseType.COMMON.name());
+        }
+    }
+
+    private boolean isDynamicPhrase(Phrase phrase) {
+        return phrase.getSentences().stream().anyMatch(s -> s.getSentence().contains("%gayname%"));
     }
 }

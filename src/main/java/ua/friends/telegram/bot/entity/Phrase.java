@@ -20,6 +20,9 @@ public class Phrase implements Serializable {
     @Column
     private int authorTgId;
 
+    @Column
+    private String phraseType;
+
     public Phrase() {
     }
 
@@ -51,11 +54,20 @@ public class Phrase implements Serializable {
         this.sentences = sentences;
     }
 
+    public String getPhraseType() {
+        return phraseType;
+    }
+
+    public void setPhraseType(String phraseType) {
+        this.phraseType = phraseType;
+    }
+
     @Override
     public String toString() {
         return "Phrase{" +
                 "phraseId=" + phraseId +
                 ", sentences=" + sentences +
+                ", phrase type=" + phraseType +
                 "}";
     }
 }

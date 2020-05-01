@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.Phrase;
+import ua.friends.telegram.bot.entity.PhraseType;
 import ua.friends.telegram.bot.entity.Sentence;
 import ua.friends.telegram.bot.exception.PhraseNotFoundException;
 import ua.friends.telegram.bot.service.PhraseService;
@@ -38,10 +39,16 @@ public class PhrasePreviewCommand implements Command {
 
     private List<SendMessage> getSendMessages(long chatId, Phrase phrase) {
         List<SendMessage> sendMessages = new ArrayList<>();
+        boolean isPhraseDynamic = phrase.getPhraseType().equalsIgnoreCase(PhraseType.DYNAMIC.name());
         StringBuilder sb = null;
         for (Sentence sentence : phrase.getSentences()) {
             sb = new StringBuilder();
-            sb.append(sentence.getSentence());
+            String snt = sentence.getSentence();
+            if (isPhraseDynamic) {
+                sb.append(snt.replaceAll("%gayname%", "Джон Смит"));
+            } else {
+                sb.append(snt);
+            }
             sb.append("\n");
             sendMessages.add(MessageUtils.generateMessage(chatId, sb.toString()));
         }
