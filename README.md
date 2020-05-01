@@ -10,7 +10,11 @@
 - pidorreg - /pidorreg registry in gay game
 - stat - /stat year - stats for gay game
 - gaytoday - /gaytoday manual gay game executor
-- addphrase - /addphrase  add custom phrase for gay game (max 5 per user, delimeter &)
+- addphrase - /addphrase  add custom phrase for gay game
+  - max 20 phrases per user
+  - each phrase has max 5 sentences
+  - delimeter  for sentences &
+  - %gayname% variable for inserting gay name in a sentence 
 - showphrases - /showphrases shows user custom phrases for gay game
 - remphrase - /remphrase id remove user phrase by id
 - phrasepreview - /phrasepreview id shows how bot will print ur phrase
