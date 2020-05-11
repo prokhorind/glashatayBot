@@ -43,7 +43,7 @@ public class GlashatayBot extends TelegramLongPollingBot {
 
     private void processMessage(Update update, Message message, MessageData messageData) {
         Endpoint endpoint = Stream.of(Endpoint.values()).filter(hasEndpoint(messageData.getCommand())).findAny().orElse(Endpoint.INVALID);
-        logger.info("ENDPOINT:" + endpoint.getValue());
+        logger.config("ENDPOINT:" + endpoint.getValue());
         processBan(update, messageData, endpoint);
         processNewData(message, messageData);
         processLoginChange(message, messageData);
