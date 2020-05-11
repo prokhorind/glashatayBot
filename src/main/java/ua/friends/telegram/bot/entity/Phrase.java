@@ -67,7 +67,6 @@ public class Phrase implements Serializable {
         return "Phrase{" +
                 "phraseId=" + phraseId +
                 ", sentences=" + sentences +
-                ", phrase type=" + phraseType +
                 "}";
     }
 }
