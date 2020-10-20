@@ -45,11 +45,13 @@ public class GayJob implements Job {
         gayGameService.setCronInfoService(cronInfoService);
         if (!gayGameService.getCronInfoForCurrentDay(chat).isPresent()) {
             try {
-                gayGameService.updateGameStats(chat, user, 1);
                 bot.executeFromCron(chat.getChatId(), createMessage(user));
+                gayGameService.updateGameStats(chat, user, 1);
                 cronInfoService.updateCronInfo(chat, user);
             } catch (TelegramApiException e) {
+                logger.warning("Looks like chat was removed");
                 logger.warning(e.getMessage());
+                gayGameService.updateFailedGameStat(chat,1);
             }
         }
     }

@@ -5,6 +5,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import ua.friends.telegram.bot.config.HibernateUtil;
 import ua.friends.telegram.bot.entity.Chat;
+import ua.friends.telegram.bot.entity.GayGame;
 
 import javax.persistence.NoResultException;
 import java.util.*;
@@ -30,6 +31,24 @@ public class ChatDao {
             }
             logger.warning(e.getMessage());
             return Optional.empty();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void saveOrUpdate(Chat chat) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.saveOrUpdate(chat);
+            session.flush();
+            tx.commit();
+            logger.info("Number of failed games was updated:" + chat.toString());
+        } catch (Exception e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
         } finally {
             session.close();
         }

@@ -1,14 +1,23 @@
 package ua.friends.telegram.bot.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 @Entity
 @Table
 public class Chat implements Serializable {
+
     private static final long serialVersionUID = -1798070786993154676L;
 
     @Id
@@ -17,7 +26,6 @@ public class Chat implements Serializable {
 
     @ManyToMany(mappedBy = "chats", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
-
 
     @ManyToMany(mappedBy = "gayChats", fetch = FetchType.EAGER)
     private Set<User> gayUsers = new HashSet<>();
@@ -31,6 +39,8 @@ public class Chat implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chat")
     private Set<CronInfo> cronInfos = new HashSet<>();
 
+    @Column(columnDefinition = "integer default 0")
+    private int numberOfFailedGayChooseMessages;
 
     public Chat() {
     }
@@ -87,10 +97,18 @@ public class Chat implements Serializable {
         this.cronInfos = cronInfos;
     }
 
+    public void setNumberOfFailedGayChooseMessages(int numberOfFailedGayChooseMessages) {
+        this.numberOfFailedGayChooseMessages = numberOfFailedGayChooseMessages;
+    }
+
+    public int getNumberOfFailedGayChooseMessages() {
+        return numberOfFailedGayChooseMessages;
+    }
+
     @Override
     public String toString() {
         return "Chat{" +
-                "chatId=" + chatId +
-                '}';
+            "chatId=" + chatId +
+            '}';
     }
 }
