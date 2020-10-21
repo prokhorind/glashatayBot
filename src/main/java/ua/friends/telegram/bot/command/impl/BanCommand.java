@@ -43,6 +43,9 @@ public class BanCommand implements Command {
         User usr = null;
         try {
             usr = user.get();
+            if(usr.getLogin().equalsIgnoreCase(System.getenv("ADMIN"))){
+                return Collections.singletonList(MessageUtils.generateMessage(update.getMessage().getChatId(), "Nope"));
+            }
         } catch (Exception e) {
             usr = null;
             logger.warning(e.getMessage());

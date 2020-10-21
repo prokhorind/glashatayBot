@@ -8,8 +8,6 @@ import java.util.logging.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import okhttp3.MediaType;
@@ -70,7 +68,6 @@ public class AdminUtils {
         Gson gson = new Gson();
         try {
             String json = response.body().string();
-            logger.info("response body="+json);
             RootTelegramAPi telegramAPi = gson.fromJson(json, RootTelegramAPi.class);
            logger.info("roottelegramapi:"+telegramAPi.toString());
             return Optional.of(telegramAPi);
