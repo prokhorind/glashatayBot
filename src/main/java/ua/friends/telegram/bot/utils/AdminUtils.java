@@ -44,10 +44,13 @@ public class AdminUtils {
             .build();
         logger.info("Trying getting response for:"+request.toString());
         Optional<Response> optionalResponse = getResponse(request);
+        logger.info("OptionalResponse="+optionalResponse.toString());
         if (!optionalResponse.isPresent()) {
             return false;
         }
+        logger.info("OptionalResponse="+optionalResponse.toString());
         Response response = optionalResponse.get();
+        logger.info("response="+response.toString());
         if (response.code() == 400){
                 return false;
         }
