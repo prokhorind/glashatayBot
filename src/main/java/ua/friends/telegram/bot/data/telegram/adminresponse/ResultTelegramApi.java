@@ -91,4 +91,19 @@ public class ResultTelegramApi {
     public void setCan_promote_members(boolean can_promote_members) {
         this.can_promote_members = can_promote_members;
     }
+
+    @Override
+    public String toString() {
+        return "ResultTelegramApi{" +
+            "user=" + user +
+            ", status='" + status + '\'' +
+            ", can_be_edited=" + can_be_edited +
+            ", can_change_info=" + can_change_info +
+            ", can_delete_messages=" + can_delete_messages +
+            ", can_invite_users=" + can_invite_users +
+            ", can_restrict_members=" + can_restrict_members +
+            ", can_pin_messages=" + can_pin_messages +
+            ", can_promote_members=" + can_promote_members +
+            '}';
+    }
 }

@@ -23,4 +23,12 @@ public class RootTelegramAPi {
     public void setOk(boolean ok) {
         this.ok = ok;
     }
+
+    @Override
+    public String toString() {
+        return "RootTelegramAPi{" +
+            "ok=" + ok +
+            ", result=" + result +
+            '}';
+    }
 }

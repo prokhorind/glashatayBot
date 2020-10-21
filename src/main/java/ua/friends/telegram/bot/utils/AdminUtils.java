@@ -47,7 +47,12 @@ public class AdminUtils {
         if (!optionalResponse.isPresent()) {
             return false;
         }
-        Optional<RootTelegramAPi> optionalParsedResponse = parseResponse(optionalResponse.get());
+        Response response = optionalResponse.get();
+        if (response.code() == 400){
+                return false;
+        }
+        Optional<RootTelegramAPi> optionalParsedResponse = parseResponse(response);
+        logger.info("OptionalParsedResponse="+optionalParsedResponse.toString());
         boolean isTgAdmin = optionalParsedResponse
             .map(rootTelegramAPi -> rootTelegramAPi.getResult().stream().anyMatch(r -> isTelegramAdmin(r, userId))).orElse(false);
         return isTgAdmin;
@@ -80,8 +85,7 @@ public class AdminUtils {
 
     private static String buildRequest(String url) {
       String fullUrl =  String.format("%s%s%s", CORE_API_URL, getBotToken(), url);
-      logger.info(String.format("%s:%s","Full url",fullUrl));
-        return fullUrl;
+      return fullUrl;
     }
 
     public static String getBotToken() {

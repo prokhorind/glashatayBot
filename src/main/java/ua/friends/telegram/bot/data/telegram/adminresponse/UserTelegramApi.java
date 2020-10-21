@@ -55,4 +55,16 @@ public class UserTelegramApi {
     public void setLanguage_code(String language_code) {
         this.language_code = language_code;
     }
+
+    @Override
+    public String toString() {
+        return "UserTelegramApi{" +
+            "id=" + id +
+            ", is_bot=" + is_bot +
+            ", first_name='" + first_name + '\'' +
+            ", username='" + username + '\'' +
+            ", last_name='" + last_name + '\'' +
+            ", language_code='" + language_code + '\'' +
+            '}';
+    }
 }
