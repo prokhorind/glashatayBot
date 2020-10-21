@@ -20,7 +20,7 @@ import static ua.friends.telegram.bot.utils.TelegramNameUtils.findName;
 
 public class GayRegCommand implements Command {
 
-    private static final String MESSAGE = "не зарегистрирован";
+    private static final String MESSAGE = "уже участвует в игре";
 
     private static final String SUCCESS_MESSAGE = "успешно зарегистрирован";
 
