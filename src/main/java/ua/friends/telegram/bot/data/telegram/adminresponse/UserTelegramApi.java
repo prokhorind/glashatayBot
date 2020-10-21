@@ -8,6 +8,7 @@ public class UserTelegramApi {
         private String last_name;
         private String language_code;
 
+    public UserTelegramApi(){};
     public int getId() {
         return id;
     }

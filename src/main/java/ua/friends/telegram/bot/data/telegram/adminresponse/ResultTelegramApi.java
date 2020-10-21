@@ -20,6 +20,8 @@ public class ResultTelegramApi {
 
     private boolean can_promote_members;
 
+    public ResultTelegramApi(){}
+
     public UserTelegramApi getUser() {
         return user;
     }

@@ -8,6 +8,8 @@ public class RootTelegramAPi {
 
     private List<ResultTelegramApi> result;
 
+    public RootTelegramAPi(){};
+
     public List<ResultTelegramApi> getResult() {
         return result;
     }
