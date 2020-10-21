@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -64,11 +65,9 @@ public class AdminUtils {
     }
 
     private static Optional<RootTelegramAPi> parseResponse(Response response) {
-        ObjectMapper om = new ObjectMapper();
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        Gson gson = new Gson();
         try {
-           RootTelegramAPi telegramAPi = om.readValue(response.body().string(), RootTelegramAPi.class);
+           RootTelegramAPi telegramAPi = gson.fromJson(response.body().string(), RootTelegramAPi.class);
            logger.info("roottelegramapi:"+telegramAPi.toString());
             return Optional.of(telegramAPi);
         } catch (IOException e) {
