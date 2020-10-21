@@ -87,7 +87,7 @@ public class AdminUtils {
     private static Optional<Response> getResponse(Request request) {
         try (Response response = httpClient.newCall(request).execute()) {
             logger.info("Got response:"+response.body().string());
-            ResponseBody body = response.body();
+            ResponseBody body = response.peekBody(Long.MAX_VALUE);
             String bodyString = body.string();
             MediaType contentType = body.contentType();
             return Optional.of(response.newBuilder().body(ResponseBody.create(contentType, bodyString)).build());
