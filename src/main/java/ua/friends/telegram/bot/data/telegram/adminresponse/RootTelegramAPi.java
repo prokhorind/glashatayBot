@@ -22,6 +22,10 @@ public class RootTelegramAPi {
         return ok;
     }
 
+    public boolean getOk() {
+        return ok;
+    }
+
     public void setOk(boolean ok) {
         this.ok = ok;
     }
