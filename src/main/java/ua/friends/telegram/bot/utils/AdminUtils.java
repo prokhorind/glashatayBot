@@ -79,7 +79,9 @@ public class AdminUtils {
     }
 
     private static String buildRequest(String url) {
-        return String.format("%s%s", CORE_API_URL, getBotToken(), url);
+      String fullUrl =  String.format("%s%s%s", CORE_API_URL, getBotToken(), url);
+      logger.info(String.format("%s:%s","Full url",fullUrl));
+        return fullUrl;
     }
 
     public static String getBotToken() {
