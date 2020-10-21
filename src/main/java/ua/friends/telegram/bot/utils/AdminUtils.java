@@ -12,9 +12,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import ua.friends.telegram.bot.data.telegram.adminresponse.ResultTelegramApi;
 import ua.friends.telegram.bot.data.telegram.adminresponse.RootTelegramAPi;
 import ua.friends.telegram.bot.data.telegram.adminresponse.UserTelegramApi;
@@ -85,7 +87,10 @@ public class AdminUtils {
     private static Optional<Response> getResponse(Request request) {
         try (Response response = httpClient.newCall(request).execute()) {
             logger.info("Got response:"+response.body().string());
-            return Optional.of(response);
+            ResponseBody body = response.body();
+            String bodyString = body.string();
+            MediaType contentType = body.contentType();
+            return Optional.of(response.newBuilder().body(ResponseBody.create(contentType, bodyString)).build());
         } catch (IOException e) {
             logger.warning("Can't get the response from telegram API" + e.getMessage());
             return Optional.empty();
