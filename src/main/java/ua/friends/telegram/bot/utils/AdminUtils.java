@@ -67,14 +67,16 @@ public class AdminUtils {
     private static Optional<RootTelegramAPi> parseResponse(Response response) {
         Gson gson = new Gson();
         try {
-           RootTelegramAPi telegramAPi = gson.fromJson(response.body().string(), RootTelegramAPi.class);
+            String json = response.body().string();
+            logger.info("response body="+json);
+            RootTelegramAPi telegramAPi = gson.fromJson(json, RootTelegramAPi.class);
            logger.info("roottelegramapi:"+telegramAPi.toString());
             return Optional.of(telegramAPi);
         } catch (IOException e) {
             logger.warning("Can't parse the response from telegram API" + e.getMessage());
             return Optional.empty();
         } catch (Exception e){
-            logger.warning(e.getMessage());
+            logger.warning(e.toString());
             return Optional.empty();
         }
 
