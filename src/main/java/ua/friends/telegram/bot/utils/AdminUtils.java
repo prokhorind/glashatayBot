@@ -42,6 +42,7 @@ public class AdminUtils {
         Request request = new Request.Builder()
             .url(buildRequest(url))
             .build();
+        logger.info("Trying getting response for:"+request.toString());
         Optional<Response> optionalResponse = getResponse(request);
         if (!optionalResponse.isPresent()) {
             return false;
@@ -69,6 +70,7 @@ public class AdminUtils {
 
     private static Optional<Response> getResponse(Request request) {
         try (Response response = httpClient.newCall(request).execute()) {
+            logger.info("Got response:"+response.body().string());
             return Optional.of(response);
         } catch (IOException e) {
             logger.warning("Can't get the response from telegram API" + e.getMessage());
