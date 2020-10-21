@@ -71,7 +71,11 @@ public class AdminUtils {
         } catch (IOException e) {
             logger.warning("Can't parse the response from telegram API" + e.getMessage());
             return Optional.empty();
+        } catch (Exception e){
+            logger.warning(e.getMessage());
+            return Optional.empty();
         }
+
     }
 
     private static Optional<Response> getResponse(Request request) {
