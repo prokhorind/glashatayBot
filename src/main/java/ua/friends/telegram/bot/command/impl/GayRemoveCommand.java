@@ -14,11 +14,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 public class GayRemoveCommand  implements Command {
     private static final String MESSAGE = "и так не участвует";
     private static final String SUCCESS_MESSAGE = "успешно удалён";
     private UserService userService = new UserService();
-    private ChatService chatService = new ChatService();
+    @Inject
+    private ChatService chatService;
     private GayGameService gayGameService = new GayGameService();
 
     @Override

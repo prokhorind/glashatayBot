@@ -15,10 +15,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 public class ImportGayGameStatsCommand implements Command {
 
     private GayGameService gayGameService = new GayGameService();
-    private ChatService chatService = new ChatService();
+    @Inject
+    private ChatService chatService;
     private UserService userService = new UserService();
 
     @Override

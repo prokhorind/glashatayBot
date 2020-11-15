@@ -7,7 +7,7 @@ import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.BanChatPreferences;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.entity.UserChatPreferences;
-import ua.friends.telegram.bot.service.UserToChatService;
+import ua.friends.telegram.bot.service.UserToChatServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public class UnbanCommand implements Command {
-    private UserToChatService userToChatService = new UserToChatService();
+    private UserToChatServiceImpl userToChatServiceImpl = new UserToChatServiceImpl();
     private Logger logger = Logger.getLogger(UnbanCommand.class.getName());
 
     @Override
@@ -27,7 +27,7 @@ public class UnbanCommand implements Command {
         String login = update.getMessage().getFrom().getUserName();
         int tgId = update.getMessage().getFrom().getId();
         long chatId = update.getMessage().getChatId();
-        User user = userToChatService.getUser(tgId, chatId);
+        User user = userToChatServiceImpl.getUser(tgId, chatId);
         List<UserChatPreferences> bpList = user.getUserChatPreferences();
         Optional<UserChatPreferences> oBp = bpList.stream().filter(u -> u.getChat().getChatId() == chatId).findAny();
         if (oBp.isPresent()) {
@@ -45,7 +45,7 @@ public class UnbanCommand implements Command {
                 logger.info("DATETIMESERVE:" + currentZonedTine);
                 logger.info("BANTIME COMPARE TO CURRZONETIME:" + banTime.compareTo(currentZonedTine));
                 if (banTime.compareTo(currentZonedTine) <= 0) {
-                    userToChatService.unBan(tgId, chatId);
+                    userToChatServiceImpl.unBan(tgId, chatId);
                     return Collections.singletonList(MessageUtils.generateMessage(chatId, login + " разбанен"));
                 }
             }

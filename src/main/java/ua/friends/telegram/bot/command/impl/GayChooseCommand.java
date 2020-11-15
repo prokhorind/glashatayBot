@@ -14,12 +14,15 @@ import ua.friends.telegram.bot.utils.TelegramNameUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import static java.lang.Boolean.TRUE;
 
 public class GayChooseCommand implements Command {
 
     private GayGameService gayGameService = new GayGameService();
-    private ChatService chatService = new ChatService();
+    @Inject
+    private ChatService chatService;
     private CronInfoService cronInfoService = new CronInfoService();
     private PhraseService phraseService = new PhraseService();
 

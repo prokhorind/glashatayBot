@@ -1,7 +1,7 @@
 package ua.friends.telegram.bot.service;
 
 import ua.friends.telegram.bot.command.impl.BanCommand;
-import ua.friends.telegram.bot.dao.ChatDao;
+import ua.friends.telegram.bot.dao.ChatDaoImpl;
 import ua.friends.telegram.bot.dao.GayGameDao;
 import ua.friends.telegram.bot.entity.*;
 import ua.friends.telegram.bot.utils.Pair;
@@ -16,7 +16,7 @@ public class GayGameService {
 
     private Logger logger = Logger.getLogger(BanCommand.class.getName());
     private GayGameDao gayGameDao = new GayGameDao();
-    private ChatDao chatDao = new ChatDao();
+    private ChatDaoImpl chatDaoImpl = new ChatDaoImpl();
     private CronInfoService cronInfoService;
 
     public static Pair<Chat, User> chooseGay(Chat chat) {
@@ -71,7 +71,7 @@ public class GayGameService {
         int newCount = failedGames+count;
         logger.warning("Gay game failed in chat:" + chat.toString());
         chat.setNumberOfFailedGayChooseMessages(newCount);
-        chatDao.saveOrUpdate(chat);
+        chatDaoImpl.saveOrUpdate(chat);
     }
 
     public void saveOrUpdate(GayGame gayGame) {

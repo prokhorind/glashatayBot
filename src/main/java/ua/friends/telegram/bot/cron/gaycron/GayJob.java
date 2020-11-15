@@ -6,13 +6,13 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ua.friends.telegram.bot.GlashatayBot;
+import ua.friends.telegram.bot.GlashatayBotImpl;
 import ua.friends.telegram.bot.command.impl.BanCommand;
 import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.CronInfoService;
 import ua.friends.telegram.bot.service.GayGameService;
-import ua.friends.telegram.bot.service.UserToChatService;
+import ua.friends.telegram.bot.service.UserToChatServiceImpl;
 import ua.friends.telegram.bot.utils.Pair;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
@@ -27,14 +27,14 @@ public class GayJob implements Job {
 
     private Logger logger = Logger.getLogger(BanCommand.class.getName());
 
-    private GlashatayBot bot;
-    private UserToChatService userToChatService = new UserToChatService();
+    private GlashatayBotImpl bot;
+    private UserToChatServiceImpl userToChatServiceImpl = new UserToChatServiceImpl();
     private GayGameService gayGameService = new GayGameService();
     private CronInfoService cronInfoService = new CronInfoService();
 
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
-        bot = (GlashatayBot) arg0.getJobDetail().getJobDataMap().get("bot");
-        List<Chat> chatList = userToChatService.getAll();
+        bot = (GlashatayBotImpl) arg0.getJobDetail().getJobDataMap().get("bot");
+        List<Chat> chatList = userToChatServiceImpl.getAll();
         List<Pair<Chat, User>> gaysList = chatList.stream().filter(this::isChatHasGayPlayers).map(GayGameService::chooseGay).collect(Collectors.toList());
         gaysList.forEach(this::updateGameChats);
     }

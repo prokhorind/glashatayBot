@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -26,7 +28,8 @@ public class GayRegCommand implements Command {
 
     private UserService userService = new UserService();
 
-    private ChatService chatService = new ChatService();
+    @Inject
+    private ChatService chatService;
 
     private GayGameService gayGameService = new GayGameService();
 

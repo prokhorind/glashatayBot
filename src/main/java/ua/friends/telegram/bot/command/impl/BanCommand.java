@@ -14,10 +14,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 public class BanCommand implements Command {
 
     private UserService userService = new UserService();
-    private UserToChatService userToChatService = new UserToChatService();
+
+    @Inject
+    private UserToChatService userToChatService;
 
     private Logger logger = Logger.getLogger(BanCommand.class.getName());
 
