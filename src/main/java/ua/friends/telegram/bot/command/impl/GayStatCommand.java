@@ -6,15 +6,19 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.GayGame;
 import ua.friends.telegram.bot.service.GayGameService;
+import ua.friends.telegram.bot.service.GayGameServiceImpl;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class GayStatCommand implements Command {
     public static final int OLD_VALUE_YEAR = 2019;
-    private GayGameService gayGameService = new GayGameService();
+    @Inject
+    private GayGameService gayGameService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {

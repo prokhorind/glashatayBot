@@ -8,7 +8,9 @@ import ua.friends.telegram.bot.entity.GayGame;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.ChatService;
 import ua.friends.telegram.bot.service.GayGameService;
+import ua.friends.telegram.bot.service.GayGameServiceImpl;
 import ua.friends.telegram.bot.service.UserService;
+import ua.friends.telegram.bot.service.UserServiceImpl;
 import ua.friends.telegram.bot.utils.AdminUtils;
 
 import java.util.Collections;
@@ -19,10 +21,12 @@ import javax.inject.Inject;
 
 public class ImportGayGameStatsCommand implements Command {
 
-    private GayGameService gayGameService = new GayGameService();
+    @Inject
+    private GayGameService gayGameService;
     @Inject
     private ChatService chatService;
-    private UserService userService = new UserService();
+    @Inject
+    private UserService userService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {

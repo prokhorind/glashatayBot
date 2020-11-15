@@ -5,14 +5,18 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.service.GayGameService;
+import ua.friends.telegram.bot.service.GayGameServiceImpl;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class FullGayGameStatsCommand implements Command {
 
-    private GayGameService gayGameService = new GayGameService();
+    @Inject
+    private GayGameService gayGameService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {

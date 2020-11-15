@@ -1,6 +1,7 @@
 package ua.friends.telegram.bot.service;
 
 import org.telegram.telegrambots.meta.api.objects.Message;
+
 import ua.friends.telegram.bot.dao.UserToChatDao;
 import ua.friends.telegram.bot.data.UserData;
 import ua.friends.telegram.bot.entity.Chat;
@@ -15,8 +16,10 @@ import javax.inject.Inject;
 public class UserToChatServiceImpl implements UserToChatService{
     @Inject
     private ChatService chatService;
-    private UserService userService = new UserService();
-    private UserToChatDao userToChatDao = new UserToChatDao();
+    @Inject
+    private UserService userService;
+    @Inject
+    private UserToChatDao userToChatDao;
 
     public void banUser(User user, long chatId, long minutes) {
         Chat chat = chatService.find(chatId).get();

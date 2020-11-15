@@ -16,7 +16,9 @@ import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.ChatService;
 import ua.friends.telegram.bot.service.GayGameService;
+import ua.friends.telegram.bot.service.GayGameServiceImpl;
 import ua.friends.telegram.bot.service.UserService;
+import ua.friends.telegram.bot.service.UserServiceImpl;
 
 import static ua.friends.telegram.bot.utils.TelegramNameUtils.findName;
 
@@ -26,12 +28,14 @@ public class GayRegCommand implements Command {
 
     private static final String SUCCESS_MESSAGE = "успешно зарегистрирован";
 
-    private UserService userService = new UserService();
+    @Inject
+    private UserService userService;
 
     @Inject
     private ChatService chatService;
 
-    private GayGameService gayGameService = new GayGameService();
+    @Inject
+    private GayGameService gayGameService;
 
     private Logger logger = Logger.getLogger(GayRegCommand.class.getName());
 

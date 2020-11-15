@@ -6,6 +6,7 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.UserService;
+import ua.friends.telegram.bot.service.UserServiceImpl;
 import ua.friends.telegram.bot.service.UserToChatService;
 import ua.friends.telegram.bot.utils.AdminUtils;
 
@@ -18,7 +19,8 @@ import javax.inject.Inject;
 
 public class BanCommand implements Command {
 
-    private UserService userService = new UserService();
+    @Inject
+    private UserService userService;
 
     @Inject
     private UserToChatService userToChatService;
