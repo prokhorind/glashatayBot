@@ -51,10 +51,11 @@ public class TextCommandExecutorImpl implements TextCommandExecutor{
     @Inject @Named("gayRem")
     private Command gayRemCommand;
 
-    private static Map<Endpoint, Command> commandMap = new HashMap();
+    private Map<Endpoint, Command> commandMap;
 
-    @PostConstruct
-    public void init() {
+    @Inject
+    private void init() {
+        commandMap = new HashMap();
         commandMap.put(Endpoint.SAY, glashatayCommand);
         commandMap.put(Endpoint.INVALID, invalidMessageCommand);
         commandMap.put(Endpoint.DELETE, deleteMessageCommand);
@@ -72,10 +73,6 @@ public class TextCommandExecutorImpl implements TextCommandExecutor{
         commandMap.put(Endpoint.IMPORT, importGayGameStatsCommand);
         commandMap.put(Endpoint.ALLSTAT, fullGayGameStatsCommand);
         commandMap.put(Endpoint.PHRASEPREVIEW, phrasePreviewCommand);
-    }
-
-    public static Map<Endpoint, Command> getCommandMap() {
-        return commandMap;
     }
 
     public List<BotApiMethod> execute(Endpoint endpoint, Update update) {

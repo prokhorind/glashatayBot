@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.friends.telegram.bot.command.Endpoint;
+import ua.friends.telegram.bot.command.TextCommandExecutor;
 import ua.friends.telegram.bot.command.TextCommandExecutorImpl;
 import ua.friends.telegram.bot.command.impl.UnbanCommand;
 import ua.friends.telegram.bot.data.MessageData;
@@ -25,6 +26,8 @@ public class GlashatayBotImpl extends TelegramLongPollingBot implements Glashata
 
     @Inject
     private UserToChatService userToChatService;
+    @Inject
+    private TextCommandExecutor textCommandExecutor;
 
     public GlashatayBotImpl() {
     };
@@ -119,7 +122,6 @@ public class GlashatayBotImpl extends TelegramLongPollingBot implements Glashata
     }
 
     private void execute(Update update, Endpoint endpoint) {
-        TextCommandExecutorImpl textCommandExecutor = new TextCommandExecutorImpl();
         List<BotApiMethod> messages = textCommandExecutor.execute(endpoint, update);
         try {
             for (BotApiMethod message : messages) {
