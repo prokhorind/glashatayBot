@@ -47,7 +47,7 @@ public class GayStatCommand implements Command {
         }
 
         createHeader(sb, year);
-        Integer playerNum = 0;
+        AtomicInteger playerNum = new AtomicInteger(0);
         gayGameList.forEach(g -> buildMessage(sb, g, playerNum));
         return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
     }
@@ -64,8 +64,8 @@ public class GayStatCommand implements Command {
         }
     }
 
-    private void buildMessage(StringBuilder sb, GayGame game, Integer playerNum) {
-        playerNum += 1;
+    private void buildMessage(StringBuilder sb, GayGame game, AtomicInteger playerNum) {
+        playerNum.getAndIncrement();
         sb.append(String.format("%s%d%s%s","<b>",playerNum,".","</b>"));
         sb.append(TelegramNameUtils.findName(game.getUser(), false));
         sb.append(":");

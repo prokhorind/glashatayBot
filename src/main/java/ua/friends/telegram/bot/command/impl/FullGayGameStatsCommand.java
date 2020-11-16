@@ -10,6 +10,7 @@ import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -28,7 +29,7 @@ public class FullGayGameStatsCommand implements Command {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "В этом чате в пидора не играют"));
         }
         addHeader(sb);
-        Integer playerNum = 0;
+        AtomicInteger playerNum = new AtomicInteger(0);
         gayGameList.forEach(g -> buildMessage(sb, (Object[]) g, playerNum));
         return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
     }
@@ -38,8 +39,8 @@ public class FullGayGameStatsCommand implements Command {
         sb.append("\n");
     }
 
-    private void buildMessage(StringBuilder sb, Object[] user, Integer playerNum) {
-        playerNum += 1;
+    private void buildMessage(StringBuilder sb, Object[] user, AtomicInteger playerNum) {
+        playerNum.getAndIncrement();
         long sum = (long) user[4];
         String login = (String) user[1];
         String name = (String) user[2];
