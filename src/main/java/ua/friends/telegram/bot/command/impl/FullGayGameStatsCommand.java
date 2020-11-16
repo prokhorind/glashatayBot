@@ -28,8 +28,9 @@ public class FullGayGameStatsCommand implements Command {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "В этом чате в пидора не играют"));
         }
         addHeader(sb);
-        gayGameList.forEach(g -> buildMessage(sb, (Object[]) g));
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString()));
+        Integer playerNum = 0;
+        gayGameList.forEach(g -> buildMessage(sb, (Object[]) g, playerNum));
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
     }
 
     private void addHeader(StringBuilder sb) {
@@ -37,12 +38,14 @@ public class FullGayGameStatsCommand implements Command {
         sb.append("\n");
     }
 
-    private void buildMessage(StringBuilder sb, Object[] user) {
+    private void buildMessage(StringBuilder sb, Object[] user, Integer playerNum) {
+        playerNum += 1;
         long sum = (long) user[4];
         String login = (String) user[1];
         String name = (String) user[2];
         String surname = (String) user[3];
         sb.append(TelegramNameUtils.findName(login, name, surname, false));
+        sb.append(String.format("%s%d%s%s","<b>",playerNum,".","</b>"));
         sb.append(":");
         sb.append(sum);
         sb.append("\n");

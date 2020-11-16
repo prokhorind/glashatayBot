@@ -12,11 +12,14 @@ import ua.friends.telegram.bot.utils.TelegramNameUtils;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
 public class GayStatCommand implements Command {
+
     public static final int OLD_VALUE_YEAR = 2019;
+
     @Inject
     private GayGameService gayGameService;
 
@@ -44,8 +47,9 @@ public class GayStatCommand implements Command {
         }
 
         createHeader(sb, year);
-        gayGameList.forEach(g -> buildMessage(sb, g));
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString()));
+        Integer playerNum = 0;
+        gayGameList.forEach(g -> buildMessage(sb, g, playerNum));
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
     }
 
     private void createHeader(StringBuilder sb, int year) {
@@ -60,8 +64,9 @@ public class GayStatCommand implements Command {
         }
     }
 
-
-    private void buildMessage(StringBuilder sb, GayGame game) {
+    private void buildMessage(StringBuilder sb, GayGame game, Integer playerNum) {
+        playerNum += 1;
+        sb.append(String.format("%s%d%s%s","<b>",playerNum,".","</b>"));
         sb.append(TelegramNameUtils.findName(game.getUser(), false));
         sb.append(":");
         sb.append(game.getCount());
