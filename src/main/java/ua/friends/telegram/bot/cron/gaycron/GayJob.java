@@ -1,6 +1,5 @@
 package ua.friends.telegram.bot.cron.gaycron;
 
-
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -13,9 +12,13 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import ua.friends.telegram.bot.GlashatayBot;
 import ua.friends.telegram.bot.GlashatayBotImpl;
 import ua.friends.telegram.bot.command.impl.BanCommand;
+import ua.friends.telegram.bot.config.GuiceDIConfig;
 import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.CronInfoService;
@@ -31,18 +34,20 @@ public class GayJob implements Job {
 
     private Logger logger = Logger.getLogger(BanCommand.class.getName());
 
-    @Inject
-    private GlashatayBot bot;
-    @Inject
-    private UserToChatService userToChatService;
-    @Inject
-    private GayGameService gayGameService;
-    @Inject
-    private CronInfoService cronInfoService;
+    private Injector injector = Guice.createInjector(new GuiceDIConfig());
+
+    private GlashatayBot bot = injector.getInstance(GlashatayBot.class);;
+
+    private UserToChatService userToChatService = injector.getInstance(UserToChatService.class);
+
+    private GayGameService gayGameService = injector.getInstance(GayGameService.class);;
+
+    private CronInfoService cronInfoService = injector.getInstance(CronInfoService.class);;
 
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         List<Chat> chatList = userToChatService.getAll();
-        List<Pair<Chat, User>> gaysList = chatList.stream().filter(this::isChatHasGayPlayers).map(GayGameService::chooseGay).collect(Collectors.toList());
+        List<Pair<Chat, User>> gaysList =
+            chatList.stream().filter(this::isChatHasGayPlayers).map(GayGameService::chooseGay).collect(Collectors.toList());
         gaysList.forEach(this::updateGameChats);
     }
 
@@ -57,7 +62,9 @@ public class GayJob implements Job {
             } catch (TelegramApiException e) {
                 logger.warning("Looks like chat was removed");
                 logger.warning(e.getMessage());
-                gayGameService.updateFailedGameStat(chat,1);
+                gayGameService.updateFailedGameStat(chat, 1);
+            } catch (Exception e) {
+                logger.warning(e.getMessage());
             }
         }
     }
