@@ -44,8 +44,8 @@ public class FullGayGameStatsCommand implements Command {
         String login = (String) user[1];
         String name = (String) user[2];
         String surname = (String) user[3];
-        sb.append(TelegramNameUtils.findName(login, name, surname, false));
         sb.append(String.format("%s%d%s%s ","<strong>",playerNum.incrementAndGet(),".","</strong>"));
+        sb.append(TelegramNameUtils.findName(login, name, surname, false));
         sb.append(" : ");
         sb.append(sum);
         sb.append("\n");
