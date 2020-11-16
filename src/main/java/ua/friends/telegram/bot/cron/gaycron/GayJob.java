@@ -13,6 +13,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import ua.friends.telegram.bot.GlashatayBot;
 import ua.friends.telegram.bot.GlashatayBotImpl;
 import ua.friends.telegram.bot.command.impl.BanCommand;
 import ua.friends.telegram.bot.entity.Chat;
@@ -30,7 +31,8 @@ public class GayJob implements Job {
 
     private Logger logger = Logger.getLogger(BanCommand.class.getName());
 
-    private GlashatayBotImpl bot;
+    @Inject
+    private GlashatayBot bot;
     @Inject
     private UserToChatService userToChatService;
     @Inject
@@ -39,7 +41,6 @@ public class GayJob implements Job {
     private CronInfoService cronInfoService;
 
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
-        bot = (GlashatayBotImpl) arg0.getJobDetail().getJobDataMap().get("bot");
         List<Chat> chatList = userToChatService.getAll();
         List<Pair<Chat, User>> gaysList = chatList.stream().filter(this::isChatHasGayPlayers).map(GayGameService::chooseGay).collect(Collectors.toList());
         gaysList.forEach(this::updateGameChats);
