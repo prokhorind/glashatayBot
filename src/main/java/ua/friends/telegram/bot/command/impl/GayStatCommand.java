@@ -65,8 +65,7 @@ public class GayStatCommand implements Command {
     }
 
     private void buildMessage(StringBuilder sb, GayGame game, AtomicInteger playerNum) {
-        playerNum.getAndIncrement();
-        sb.append(String.format("%s%d%s%s","<b>",playerNum,".","</b>"));
+        sb.append(String.format("%s%d%s%s","<b>",playerNum.incrementAndGet(),".","</b>"));
         sb.append(TelegramNameUtils.findName(game.getUser(), false));
         sb.append(":");
         sb.append(game.getCount());

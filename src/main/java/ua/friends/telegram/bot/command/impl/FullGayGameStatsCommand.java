@@ -40,13 +40,12 @@ public class FullGayGameStatsCommand implements Command {
     }
 
     private void buildMessage(StringBuilder sb, Object[] user, AtomicInteger playerNum) {
-        playerNum.getAndIncrement();
         long sum = (long) user[4];
         String login = (String) user[1];
         String name = (String) user[2];
         String surname = (String) user[3];
         sb.append(TelegramNameUtils.findName(login, name, surname, false));
-        sb.append(String.format("%s%d%s%s","<b>",playerNum,".","</b>"));
+        sb.append(String.format("%s%d%s%s","<b>",playerNum.incrementAndGet(),".","</b>"));
         sb.append(":");
         sb.append(sum);
         sb.append("\n");
