@@ -24,3 +24,4 @@
 - Maven
 - Hibernate
 - Telegram API   
+- Guice
