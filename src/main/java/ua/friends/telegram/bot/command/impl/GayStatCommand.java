@@ -6,15 +6,22 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.GayGame;
 import ua.friends.telegram.bot.service.GayGameService;
+import ua.friends.telegram.bot.service.GayGameServiceImpl;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.inject.Inject;
 
 public class GayStatCommand implements Command {
+
     public static final int OLD_VALUE_YEAR = 2019;
-    private GayGameService gayGameService = new GayGameService();
+
+    @Inject
+    private GayGameService gayGameService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
@@ -40,8 +47,9 @@ public class GayStatCommand implements Command {
         }
 
         createHeader(sb, year);
-        gayGameList.forEach(g -> buildMessage(sb, g));
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString()));
+        AtomicInteger playerNum = new AtomicInteger(0);
+        gayGameList.forEach(g -> buildMessage(sb, g, playerNum));
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
     }
 
     private void createHeader(StringBuilder sb, int year) {
@@ -56,10 +64,10 @@ public class GayStatCommand implements Command {
         }
     }
 
-
-    private void buildMessage(StringBuilder sb, GayGame game) {
+    private void buildMessage(StringBuilder sb, GayGame game, AtomicInteger playerNum) {
+        sb.append(String.format("%s%d%s%s ","<strong>",playerNum.incrementAndGet(),".","</strong>"));
         sb.append(TelegramNameUtils.findName(game.getUser(), false));
-        sb.append(":");
+        sb.append(" : ");
         sb.append(game.getCount());
         sb.append("\n");
     }

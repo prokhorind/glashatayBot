@@ -7,31 +7,37 @@ import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.*;
 import ua.friends.telegram.bot.service.ChatService;
 import ua.friends.telegram.bot.service.CronInfoService;
+import ua.friends.telegram.bot.service.CronInfoServiceImpl;
 import ua.friends.telegram.bot.service.GayGameService;
 import ua.friends.telegram.bot.service.PhraseService;
+import ua.friends.telegram.bot.service.PhraseServiceImpl;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import static java.lang.Boolean.TRUE;
 
 public class GayChooseCommand implements Command {
 
-    private GayGameService gayGameService = new GayGameService();
-    private ChatService chatService = new ChatService();
-    private CronInfoService cronInfoService = new CronInfoService();
-    private PhraseService phraseService = new PhraseService();
+    @Inject
+    private GayGameService gayGameService;
+    @Inject
+    private ChatService chatService;
+    @Inject
+    private CronInfoService cronInfoService;
+    @Inject
+    private PhraseService phraseService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
         long chatId = update.getMessage().getChatId();
         Chat chat = chatService.find(chatId).get();
-        gayGameService.setCronInfoService(cronInfoService);
         Optional<CronInfo> optionalCronInfo = gayGameService.getCronInfoForCurrentDay(chat);
         if (!optionalCronInfo.isPresent()) {
             User user = GayGameService.chooseGayUser(chat);
-            gayGameService.setCronInfoService(cronInfoService);
             gayGameService.updateGameStats(chat, user, 1);
             cronInfoService.updateCronInfo(chat, user);
             return createMessages(user, chat);

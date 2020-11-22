@@ -59,7 +59,7 @@ public class HibernateUtil {
         String noPrefixConnectionUrl = prefixAndConnectionUrl[1];
         String login = noPrefixConnectionUrl.split(":")[0];
         String pass = noPrefixConnectionUrl.split(":")[1].split("@")[0];
-        String urlDb = String.format("%s%s", "jdbc:postgresql://", noPrefixConnectionUrl.split(":", 2)[1].split("@")[1]);
+        String urlDb = String.format("%s%s%s", "jdbc:postgresql://", noPrefixConnectionUrl.split(":", 2)[1].split("@")[1],"?sslmode=require");
         map.put(LOGIN, login);
         map.put(PASS, pass);
         map.put(URL, urlDb);

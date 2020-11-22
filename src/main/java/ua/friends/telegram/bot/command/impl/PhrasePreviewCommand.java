@@ -9,6 +9,7 @@ import ua.friends.telegram.bot.entity.PhraseType;
 import ua.friends.telegram.bot.entity.Sentence;
 import ua.friends.telegram.bot.exception.PhraseNotFoundException;
 import ua.friends.telegram.bot.service.PhraseService;
+import ua.friends.telegram.bot.service.PhraseServiceImpl;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.util.ArrayList;
@@ -16,8 +17,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 public class PhrasePreviewCommand implements Command {
-    private PhraseService phraseService = new PhraseService();
+
+    @Inject
+    private PhraseService phraseService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {

@@ -6,17 +6,21 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.User;
 import ua.friends.telegram.bot.service.UserService;
+import ua.friends.telegram.bot.service.UserServiceImpl;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import javax.inject.Inject;
 
 public class UserIdCommand implements Command {
 
     public static final String SET_NAME = "Укажи имя";
     public static final String SET_REAL_NAME = "Укажи реальное имя";
 
-    private UserService userService = new UserService();
+    @Inject
+    private UserService userService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {

@@ -6,14 +6,18 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
 import ua.friends.telegram.bot.entity.Phrase;
 import ua.friends.telegram.bot.service.PhraseService;
+import ua.friends.telegram.bot.service.PhraseServiceImpl;
 import ua.friends.telegram.bot.utils.TelegramNameUtils;
 
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ShowUserPhrasesCommand implements Command {
 
-    private PhraseService phraseService = new PhraseService();
+    @Inject
+    private PhraseService phraseService;
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
