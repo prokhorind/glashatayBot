@@ -6,6 +6,7 @@
 - punch - /punch @name
 - say -  /say text  - saying from bot
 - tgid - /tgid @userName - shows user tgid
+  - optional param ALL
 - ratmsg - /ratmsg text - anonymous message
 - pidorreg - /pidorreg registry in gay game
 - stat - /stat year - stats for gay game
