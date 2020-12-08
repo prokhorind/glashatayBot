@@ -61,7 +61,7 @@ public class GayGameServiceImpl implements GayGameService{
     public void updateFailedGameStat(Chat chat,int count) {
         int failedGames = chat.getNumberOfFailedGayChooseMessages();
         int newCount = failedGames+count;
-        logger.warning("Gay game failed! in chat:" + chat.toString());
+        logger.warning("Gay game failed in chat:" + chat.toString());
         chat.setNumberOfFailedGayChooseMessages(newCount);
         chatDao.saveOrUpdate(chat);
     }
@@ -94,7 +94,7 @@ public class GayGameServiceImpl implements GayGameService{
                 LocalDateTime lastUsed = cronStat.getLastUsage();
                 LocalDateTime serverTime = LocalDateTime.now();
                 if (isDaysEquals(lastUsed, serverTime)) {
-                    logger.info("Job already used in:" + cronStat);
+                    logger.info("Job already used! in:" + cronStat);
                     return optionalCronInfo;
                 }
             }
