@@ -94,7 +94,7 @@ public class GayGameServiceImpl implements GayGameService{
                 LocalDateTime lastUsed = cronStat.getLastUsage();
                 LocalDateTime serverTime = LocalDateTime.now();
                 if (isDaysEquals(lastUsed, serverTime)) {
-                    logger.info("Job already used! in:" + cronStat);
+                    logger.info("Job already used in:" + cronStat);
                     return optionalCronInfo;
                 }
             }
