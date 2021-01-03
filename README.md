@@ -19,6 +19,9 @@
 - showphrases - /showphrases shows user custom phrases for gay game
 - remphrase - /remphrase id remove user phrase by id
 - phrasepreview - /phrasepreview id shows how bot will print ur phrase
+- autopick -/autopick shows auto gay game executor enabled/disabled
+  - enabled by default
+  - ON/OFF optional param for switching flag (/autopick ON)
 
 ## Tech stack:
 - Java
