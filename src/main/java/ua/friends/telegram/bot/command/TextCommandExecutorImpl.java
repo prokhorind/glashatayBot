@@ -50,6 +50,8 @@ public class TextCommandExecutorImpl implements TextCommandExecutor{
     private Command phrasePreviewCommand;
     @Inject @Named("gayRem")
     private Command gayRemCommand;
+    @Inject @Named("autoPick")
+    private Command autoPickCommand;
 
     private Map<Endpoint, Command> commandMap;
 
@@ -73,6 +75,7 @@ public class TextCommandExecutorImpl implements TextCommandExecutor{
         commandMap.put(Endpoint.IMPORT, importGayGameStatsCommand);
         commandMap.put(Endpoint.ALLSTAT, fullGayGameStatsCommand);
         commandMap.put(Endpoint.PHRASEPREVIEW, phrasePreviewCommand);
+        commandMap.put(Endpoint.AUTOPICK, autoPickCommand);
     }
 
     public List<BotApiMethod> execute(Endpoint endpoint, Update update) {

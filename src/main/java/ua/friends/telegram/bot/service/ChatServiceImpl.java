@@ -26,6 +26,11 @@ public class ChatServiceImpl implements ChatService{
         chatDao.save(chatId);
     }
 
+    @Override
+    public void saveOrUpdate(Chat chat) {
+        chatDao.saveOrUpdate(chat);
+    }
+
     public boolean isChatExist(long chatId) {
         return find(chatId).isPresent();
     }

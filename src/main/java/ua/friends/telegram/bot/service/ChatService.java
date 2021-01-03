@@ -11,4 +11,5 @@ public interface ChatService {
     boolean isChatExist(long chatId);
     Optional<Chat> find(long chatId);
     List<Chat> getAll();
+    void saveOrUpdate(Chat chat);
 }

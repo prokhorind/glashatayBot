@@ -28,6 +28,19 @@ public class GayStatCommand implements Command {
         String[] command = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
+        int year = getYear(command);
+        List<GayGame> gayGameList = gayGameService.find(chatId, year);
+        if (gayGameList.isEmpty()) {
+            return Collections.singletonList(MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов"));
+        }
+
+        createHeader(sb, year);
+        AtomicInteger playerNum = new AtomicInteger(0);
+        gayGameList.forEach(g -> buildMessage(sb, g, playerNum));
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
+    }
+
+    private int getYear(String[] command) {
         int year;
         if (command.length == 2) {
             try {
@@ -41,15 +54,7 @@ public class GayStatCommand implements Command {
         } else {
             year = LocalDateTime.now().getYear();
         }
-        List<GayGame> gayGameList = gayGameService.find(chatId, year);
-        if (gayGameList.isEmpty()) {
-            return Collections.singletonList(MessageUtils.generateMessage(chatId, "В этом чате за год " + year + " нет результатов"));
-        }
-
-        createHeader(sb, year);
-        AtomicInteger playerNum = new AtomicInteger(0);
-        gayGameList.forEach(g -> buildMessage(sb, g, playerNum));
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
+        return year;
     }
 
     private void createHeader(StringBuilder sb, int year) {
