@@ -47,7 +47,7 @@ public class GayJob implements Job {
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         List<Chat> chatList = userToChatService.getAll();
         List<Pair<Chat, User>> gaysList =
-            chatList.stream().filter(this::isChatHasGayPlayers).map(GayGameService::chooseGay).collect(Collectors.toList());
+            chatList.stream().filter(this::isExecutable).map(GayGameService::chooseGay).collect(Collectors.toList());
         gaysList.forEach(this::updateGameChats);
     }
 
@@ -75,6 +75,14 @@ public class GayJob implements Job {
         sb.append(TelegramNameUtils.findName(user, TRUE));
         return sb.toString();
 
+    }
+
+    private boolean isExecutable(Chat chat) {
+        return isAutoPickEnabled(chat) && isChatHasGayPlayers(chat);
+    }
+
+    private boolean isAutoPickEnabled(Chat chat) {
+        return chat.isAutoPlayerPickEnabled();
     }
 
     private boolean isChatHasGayPlayers(Chat chat) {

@@ -42,6 +42,9 @@ public class Chat implements Serializable {
     @Column(columnDefinition = "integer default 0")
     private int numberOfFailedGayChooseMessages;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean autoPlayerPickEnabled;
+
     public Chat() {
     }
 
@@ -99,6 +102,14 @@ public class Chat implements Serializable {
 
     public void setNumberOfFailedGayChooseMessages(int numberOfFailedGayChooseMessages) {
         this.numberOfFailedGayChooseMessages = numberOfFailedGayChooseMessages;
+    }
+
+    public void setAutoPlayerPickEnabled(boolean autoPlayerPickEnabled) {
+        this.autoPlayerPickEnabled = autoPlayerPickEnabled;
+    }
+
+    public boolean isAutoPlayerPickEnabled() {
+        return autoPlayerPickEnabled;
     }
 
     public int getNumberOfFailedGayChooseMessages() {
