@@ -24,7 +24,7 @@ public class AutoPickCommand implements Command {
         long chatId = update.getMessage().getChatId();
         Chat chat = chatService.find(chatId).get();
         if (command.length != 2) {
-            String response = String.format("%s:%b", "Автовыбор включен", chat.isAutoPlayerPickEnabled());
+            String response = chat.isAutoPlayerPickEnabled() ? "Автовыбор включен" : "Автовыбор выключен";
             return Collections.singletonList(MessageUtils.generateMessage(chatId, response));
         }
         return Collections.singletonList(MessageUtils.generateMessage(chatId, switchAutoPick(chat, command[1])));
