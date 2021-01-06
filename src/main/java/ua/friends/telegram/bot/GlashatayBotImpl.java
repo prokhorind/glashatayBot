@@ -71,7 +71,7 @@ public class GlashatayBotImpl extends TelegramLongPollingBot implements Glashata
         Chat chat = chatService.find(message.getChatId()).get();
         LocalDateTime oldDate = chat.getLastMessage();
         LocalDateTime now = LocalDateTime.now();
-        if (isDateShouldBeOverriden(oldDate, now)) {
+        if (Objects.isNull(oldDate) || isDateShouldBeOverriden(oldDate, now)) {
             chat.setLastMessage(now);
             chatService.saveOrUpdate(chat);
         }

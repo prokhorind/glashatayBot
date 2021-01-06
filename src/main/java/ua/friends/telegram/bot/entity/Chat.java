@@ -48,7 +48,7 @@ public class Chat implements Serializable {
     private boolean autoPlayerPickEnabled;
 
     @Column
-    private LocalDateTime lastMessage = LocalDateTime.now();
+    private LocalDateTime lastMessage;
 
     public Chat() {
     }
