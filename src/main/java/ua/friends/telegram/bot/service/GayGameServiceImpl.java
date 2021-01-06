@@ -58,14 +58,6 @@ public class GayGameServiceImpl implements GayGameService{
         gayGameDao.saveOrUpdate(gayGame);
     }
 
-    public void updateFailedGameStat(Chat chat,int count) {
-        int failedGames = chat.getNumberOfFailedGayChooseMessages();
-        int newCount = failedGames+count;
-        logger.warning("Gay game failed in chat:" + chat.toString());
-        chat.setNumberOfFailedGayChooseMessages(newCount);
-        chatDao.saveOrUpdate(chat);
-    }
-
     public void saveOrUpdate(GayGame gayGame) {
         gayGameDao.saveOrUpdate(gayGame);
     }

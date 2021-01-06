@@ -62,7 +62,6 @@ public class GayJob implements Job {
             } catch (TelegramApiException e) {
                 logger.warning("Looks like chat was removed");
                 logger.warning(e.getMessage());
-                gayGameService.updateFailedGameStat(chat, 1);
             } catch (Exception e) {
                 logger.warning(e.getMessage());
             }

@@ -36,8 +36,6 @@ public interface GayGameService {
 
     void updateGameStats(Chat chat, User user, int count);
 
-    void updateFailedGameStat(Chat chat, int count);
-
     void saveOrUpdate(GayGame gayGame);
 
     void merge(GayGame gayGame);

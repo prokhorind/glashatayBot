@@ -1,19 +1,6 @@
 package ua.friends.telegram.bot;
 
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ua.friends.telegram.bot.command.Endpoint;
-import ua.friends.telegram.bot.command.TextCommandExecutor;
-import ua.friends.telegram.bot.command.TextCommandExecutorImpl;
-import ua.friends.telegram.bot.command.impl.UnbanCommand;
-import ua.friends.telegram.bot.data.MessageData;
-import ua.friends.telegram.bot.service.UserToChatService;
-import ua.friends.telegram.bot.utils.AdminUtils;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -22,10 +9,30 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import ua.friends.telegram.bot.command.Endpoint;
+import ua.friends.telegram.bot.command.TextCommandExecutor;
+import ua.friends.telegram.bot.command.impl.UnbanCommand;
+import ua.friends.telegram.bot.data.MessageData;
+import ua.friends.telegram.bot.entity.Chat;
+import ua.friends.telegram.bot.service.ChatService;
+import ua.friends.telegram.bot.service.UserToChatService;
+import ua.friends.telegram.bot.utils.AdminUtils;
+
 public class GlashatayBotImpl extends TelegramLongPollingBot implements GlashatayBot {
 
     @Inject
     private UserToChatService userToChatService;
+
+    @Inject
+    private ChatService chatService;
+
     @Inject
     private TextCommandExecutor textCommandExecutor;
 
@@ -55,14 +62,31 @@ public class GlashatayBotImpl extends TelegramLongPollingBot implements Glashata
         logger.config("ENDPOINT:" + endpoint.getValue());
         processBan(update, messageData, endpoint);
         processNewData(message, messageData);
+        processLastChatMessageDateUpdate(message, messageData);
         processLoginChange(message, messageData);
         processCommands(update, endpoint);
     }
 
+    private void processLastChatMessageDateUpdate(Message message, MessageData messageData) {
+        Chat chat = chatService.find(message.getChatId()).get();
+        LocalDateTime oldDate = chat.getLastMessage();
+        LocalDateTime now = LocalDateTime.now();
+        if (isDateShouldBeOverriden(oldDate, now)) {
+            chat.setLastMessage(now);
+            chatService.saveOrUpdate(chat);
+        }
+    }
+
+    private boolean isDateShouldBeOverriden(LocalDateTime oldDate, LocalDateTime now) {
+        return oldDate.getYear() < now.getYear() || (oldDate.getYear() == now.getYear() && oldDate.getMonthValue() < now.getMonthValue())
+            || (oldDate.getYear() == now.getYear() && oldDate.getMonthValue() == now.getMonthValue()
+                && oldDate.getDayOfMonth() < now.getDayOfMonth());
+    }
+
     private void processBan(Update update, MessageData messageData, Endpoint endpoint) {
-        logger.config("Try to process BAN for user:" + messageData.getUserTgId());
         if (userToChatService.isBanned(messageData.getUserTgId(), messageData.getChatId())
             && !isUserCanDoThisCommandWhileBanned(endpoint)) {
+            logger.config("Try to process BAN for user:" + messageData.getUserTgId());
             logger.info("User banned:" + messageData.getUserTgId());
             if (!canUnBan(update)) {
                 logger.info("Message from user deleted:" + messageData.getUserTgId());
@@ -72,15 +96,15 @@ public class GlashatayBotImpl extends TelegramLongPollingBot implements Glashata
     }
 
     private void processNewData(Message message, MessageData messageData) {
-        logger.config("Try to process new data:" + messageData.getUserTgId());
         if (!userToChatService.isUserHasChat(messageData.getUserTgId(), messageData.getChatId())) {
+            logger.config("Try to process new data:" + messageData.getUserTgId());
             userToChatService.processUserAndChatInDb(message);
         }
     }
 
     private void processLoginChange(Message message, MessageData messageData) {
-        logger.config("Try to process login change:" + messageData.getUserTgId());
         if (userToChatService.isUserChangeLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName())) {
+            logger.config("Try to process login change:" + messageData.getUserTgId());
             userToChatService.updateUserLogin(messageData.getUserTgId(), messageData.getChatId(), message.getFrom().getUserName());
         }
     }

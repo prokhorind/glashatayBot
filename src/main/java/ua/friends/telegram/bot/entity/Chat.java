@@ -1,6 +1,7 @@
 package ua.friends.telegram.bot.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,11 +40,15 @@ public class Chat implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "chat")
     private Set<CronInfo> cronInfos = new HashSet<>();
 
+    @Deprecated
     @Column(columnDefinition = "integer default 0")
     private int numberOfFailedGayChooseMessages;
 
     @Column(columnDefinition = "boolean default true")
     private boolean autoPlayerPickEnabled;
+
+    @Column
+    private LocalDateTime lastMessage = LocalDateTime.now();
 
     public Chat() {
     }
@@ -114,6 +119,14 @@ public class Chat implements Serializable {
 
     public int getNumberOfFailedGayChooseMessages() {
         return numberOfFailedGayChooseMessages;
+    }
+
+    public void setLastMessage(LocalDateTime lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public LocalDateTime getLastMessage() {
+        return lastMessage;
     }
 
     @Override
