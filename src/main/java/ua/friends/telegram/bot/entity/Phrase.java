@@ -23,7 +23,7 @@ public class Phrase implements Serializable {
     @Column
     private String phraseType;
 
-    @Column(columnDefinition="TEXT")
+    @Column(length = 2056)
     private String sentence;
 
     public Phrase() {
