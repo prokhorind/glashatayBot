@@ -23,6 +23,9 @@ public class Phrase implements Serializable {
     @Column
     private String phraseType;
 
+    @Column
+    private String sentence;
+
     public Phrase() {
     }
 
@@ -60,6 +63,14 @@ public class Phrase implements Serializable {
 
     public void setPhraseType(String phraseType) {
         this.phraseType = phraseType;
+    }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    public String getSentence() {
+        return sentence;
     }
 
     @Override
