@@ -6,7 +6,7 @@ import java.util.Optional;
 import ua.friends.telegram.bot.entity.Phrase;
 
 public interface PhraseService {
-    Optional<Phrase> convert(String[] sentences, int tgId);
+    Optional<Phrase> convert(int tgId, String text);
     void delete(Phrase phrase);
     Phrase getById(int id);
     void save(Phrase phrase);

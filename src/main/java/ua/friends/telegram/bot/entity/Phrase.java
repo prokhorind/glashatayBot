@@ -3,6 +3,7 @@ package ua.friends.telegram.bot.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -77,7 +78,7 @@ public class Phrase implements Serializable {
     public String toString() {
         return "Phrase{" +
                 "phraseId=" + phraseId +
-                ", sentences=" + sentences +
+                ", sentences=" + Arrays.toString(sentence.split("&")) +
                 "}";
     }
 }

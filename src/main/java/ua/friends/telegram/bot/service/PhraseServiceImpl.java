@@ -1,35 +1,24 @@
 package ua.friends.telegram.bot.service;
 
-import ua.friends.telegram.bot.dao.PhraseDao;
-import ua.friends.telegram.bot.dao.PhraseDaoImpl;
-import ua.friends.telegram.bot.dao.SentenceDao;
-import ua.friends.telegram.bot.dao.SentenceDaoImpl;
-import ua.friends.telegram.bot.entity.Phrase;
-import ua.friends.telegram.bot.entity.Sentence;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-public class PhraseServiceImpl  implements PhraseService{
+import ua.friends.telegram.bot.dao.PhraseDao;
+import ua.friends.telegram.bot.entity.Phrase;
+
+public class PhraseServiceImpl implements PhraseService {
 
     @Inject
     private PhraseDao phraseDao;
-    @Inject
-    private SentenceDao sentenceDao;
 
-    public Optional<Phrase> convert(String[] sentences, int tgId) {
-        if (sentences == null || sentences.length == 0) {
-            return Optional.empty();
-        }
+
+    public Optional<Phrase> convert(int tgId, String text) {
         Phrase phrase = new Phrase();
-        List<Sentence> sentenceList = Arrays.asList(sentences).stream().map(s -> create(s, phrase)).collect(Collectors.toList());
         phrase.setAuthorTgId(tgId);
-        phrase.setSentences(sentenceList);
+        phrase.setSentence(text);
         return Optional.of(phrase);
     }
 
@@ -46,9 +35,7 @@ public class PhraseServiceImpl  implements PhraseService{
     }
 
     public void save(Phrase phrase) {
-        List<Sentence> sentences = phrase.getSentences();
         phraseDao.save(phrase);
-        sentenceDao.save(sentences);
     }
 
     public int count(List<Integer> tgId) {
@@ -65,12 +52,5 @@ public class PhraseServiceImpl  implements PhraseService{
 
     public Optional<Phrase> get(int userId, int phraseId) {
         return phraseDao.getPhrase(userId, phraseId);
-    }
-
-    private Sentence create(String snt, Phrase phrase) {
-        Sentence sentence = new Sentence();
-        sentence.setPhrase(phrase);
-        sentence.setSentence(snt);
-        return sentence;
     }
 }

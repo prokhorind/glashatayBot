@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Entity
 @Table
+@Deprecated
 public class Sentence implements Serializable {
     private static final long serialVersionUID = -1798070786993154676L;
 

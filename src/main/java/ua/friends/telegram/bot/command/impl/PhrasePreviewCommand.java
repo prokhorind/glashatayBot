@@ -46,9 +46,8 @@ public class PhrasePreviewCommand implements Command {
         List<SendMessage> sendMessages = new ArrayList<>();
         boolean isPhraseDynamic = phrase.getPhraseType().equalsIgnoreCase(PhraseType.DYNAMIC.name());
         StringBuilder sb = null;
-        for (Sentence sentence : phrase.getSentences()) {
+        for (String snt : phrase.getSentence().split("&")) {
             sb = new StringBuilder();
-            String snt = sentence.getSentence();
             if (isPhraseDynamic) {
                 sb.append(snt.replaceAll("%gayname%", "Джон Смит"));
             } else {

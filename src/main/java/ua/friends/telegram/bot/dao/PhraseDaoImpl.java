@@ -5,7 +5,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import ua.friends.telegram.bot.config.HibernateUtil;
 import ua.friends.telegram.bot.entity.Phrase;
-import ua.friends.telegram.bot.entity.Sentence;
 
 import javax.persistence.NoResultException;
 import java.util.Collections;
@@ -137,7 +136,6 @@ public class PhraseDaoImpl implements PhraseDao{
         try {
             tx = session.beginTransaction();
             for (Phrase phrase : phrases) {
-                deleteSentencesInPhrase(session, phrase);
                 session.delete(phrase);
                 session.flush();
             }
@@ -150,14 +148,6 @@ public class PhraseDaoImpl implements PhraseDao{
             logger.warning(e.getMessage());
         } finally {
             session.close();
-        }
-    }
-
-    private void deleteSentencesInPhrase(Session session, Phrase phrase) {
-        List<Sentence> sentences = phrase.getSentences();
-        for (Sentence sentence : sentences) {
-            sentence.setPhrase(null);
-            session.delete(sentence);
         }
     }
 

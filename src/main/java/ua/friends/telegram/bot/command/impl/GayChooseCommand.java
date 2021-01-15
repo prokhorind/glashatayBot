@@ -52,7 +52,7 @@ public class GayChooseCommand implements Command {
         String gayName = TelegramNameUtils.findName(user, TRUE);
         boolean isPhraseDynamic = phrase.getPhraseType().equalsIgnoreCase(PhraseType.DYNAMIC.name());
         boolean isPhraseCommon = phrase.getPhraseType().equalsIgnoreCase(PhraseType.COMMON.name());
-        for (Sentence sentence : phrase.getSentences()) {
+        for (String sentence : phrase.getSentence().split("&")) {
             generateSentence(chat, sendMessages, gayName, isPhraseDynamic, sentence);
         }
         if (isPhraseCommon) {
@@ -61,9 +61,8 @@ public class GayChooseCommand implements Command {
         return sendMessages;
     }
 
-    private void generateSentence(Chat chat, List<SendMessage> sendMessages, String gayName, boolean isPhraseDynamic, Sentence sentence) {
+    private void generateSentence(Chat chat, List<SendMessage> sendMessages, String gayName, boolean isPhraseDynamic, String snt) {
         StringBuilder sb = new StringBuilder();
-        String snt = sentence.getSentence();
         if (isPhraseDynamic) {
             sb.append(snt.replaceAll("%gayname%", gayName));
         } else {

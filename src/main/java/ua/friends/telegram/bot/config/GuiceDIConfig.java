@@ -37,8 +37,6 @@ import ua.friends.telegram.bot.dao.GayGameDao;
 import ua.friends.telegram.bot.dao.GayGameDaoImpl;
 import ua.friends.telegram.bot.dao.PhraseDao;
 import ua.friends.telegram.bot.dao.PhraseDaoImpl;
-import ua.friends.telegram.bot.dao.SentenceDao;
-import ua.friends.telegram.bot.dao.SentenceDaoImpl;
 import ua.friends.telegram.bot.dao.UserDao;
 import ua.friends.telegram.bot.dao.UserDaoImpl;
 import ua.friends.telegram.bot.dao.UserToChatDao;
@@ -63,7 +61,6 @@ public class GuiceDIConfig extends AbstractModule {
         bind(ChatDao.class).to(ChatDaoImpl.class).in(Scopes.SINGLETON);
         bind(UserDao.class).to(UserDaoImpl.class).in(Scopes.SINGLETON);
         bind(UserToChatDao.class).to(UserToChatDaoImpl.class).in(Scopes.SINGLETON);
-        bind(SentenceDao.class).to(SentenceDaoImpl.class).in(Scopes.SINGLETON);
         bind(PhraseDao.class).to(PhraseDaoImpl.class).in(Scopes.SINGLETON);
         bind(GayGameDao.class).to(GayGameDaoImpl.class).in(Scopes.SINGLETON);
         bind(CronInfoDao.class).to(CronInfoDaoImpl.class).in(Scopes.SINGLETON);

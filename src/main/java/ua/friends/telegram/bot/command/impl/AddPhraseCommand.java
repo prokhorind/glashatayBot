@@ -27,22 +27,18 @@ public class AddPhraseCommand implements Command {
         long chatId = update.getMessage().getChatId();
         int tgId = update.getMessage().getFrom().getId();
         String text = update.getMessage().getText().trim().split(" ", 2)[1];
-        String[] sentences = text.split("&");
 
         if (phraseService.count(Collections.singletonList(tgId)) >= 20 && !AdminUtils.isUserHasRights(update)) {
             return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 20 фраз от одного пользователя"));
         }
 
-        if (sentences.length < 1 || sentences.length > 6) {
-            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 5 предложений разделённых &"));
-        }
 
-        boolean answer = Arrays.stream(sentences).allMatch(s -> s.length() < 2000);
+        boolean answer = text.length() < 2055;
         if (!answer) {
-            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 2000 символов в одном предложении"));
+            return Collections.singletonList(MessageUtils.generateMessage(chatId, "Не больше 2055 символов в одном предложении"));
         }
 
-        Optional<Phrase> optionalPhrase = phraseService.convert(sentences, tgId);
+        Optional<Phrase> optionalPhrase = phraseService.convert(tgId, text);
         if (optionalPhrase.isPresent()) {
             Phrase phrase = optionalPhrase.get();
             setPhraseType(phrase);
@@ -60,6 +56,6 @@ public class AddPhraseCommand implements Command {
     }
 
     private boolean isDynamicPhrase(Phrase phrase) {
-        return phrase.getSentences().stream().anyMatch(s -> s.getSentence().contains("%gayname%"));
+        return phrase.getSentence().contains("%gayname%");
     }
 }
