@@ -1,10 +1,15 @@
 package ua.friends.telegram.bot.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table
@@ -14,9 +19,6 @@ public class Phrase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PHRASE_ID")
     private int phraseId;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "phrase")
-    private List<Sentence> sentences = new ArrayList<>();
 
     @Column
     private int authorTgId;
@@ -48,14 +50,6 @@ public class Phrase implements Serializable {
 
     public void setAuthorTgId(int authorTgId) {
         this.authorTgId = authorTgId;
-    }
-
-    public List<Sentence> getSentences() {
-        return sentences;
-    }
-
-    public void setSentences(List<Sentence> sentences) {
-        this.sentences = sentences;
     }
 
     public String getPhraseType() {
