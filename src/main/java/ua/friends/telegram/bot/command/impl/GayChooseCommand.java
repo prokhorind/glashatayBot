@@ -24,10 +24,13 @@ public class GayChooseCommand implements Command {
 
     @Inject
     private GayGameService gayGameService;
+
     @Inject
     private ChatService chatService;
+
     @Inject
     private CronInfoService cronInfoService;
+
     @Inject
     private PhraseService phraseService;
 
@@ -42,15 +45,20 @@ public class GayChooseCommand implements Command {
             cronInfoService.updateCronInfo(chat, user);
             return createMessages(user, chat);
         }
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, "Пидор дня уже выбран:" + optionalCronInfo.get().getGayName()));
+        return Collections
+            .singletonList(MessageUtils.generateMessage(chatId, "Пидор дня уже выбран:" + optionalCronInfo.get().getGayName()));
     }
 
     private List<SendMessage> createMessages(User user, Chat chat) {
         List<SendMessage> sendMessages = new ArrayList<>();
         Set<User> gayUsers = chat.getGayUsers();
         List<Integer> userIds = gayUsers.stream().map(User::getTgId).collect(Collectors.toList());
-        Phrase phrase = phraseService.getRandomPhrase(userIds,chat.isPublicPhrasesEnabled());
         String gayName = TelegramNameUtils.findName(user, TRUE);
+        Phrase phrase = phraseService.getRandomPhrase(userIds, chat.isPublicPhrasesEnabled());
+        if (Objects.isNull(phrase)) {
+            generateCommonEndMessage(chat, sendMessages, gayName);
+            return sendMessages;
+        }
         boolean isPhraseDynamic = phrase.getPhraseType().equalsIgnoreCase(PhraseType.DYNAMIC.name());
         boolean isPhraseCommon = phrase.getPhraseType().equalsIgnoreCase(PhraseType.COMMON.name());
         for (String sentence : phrase.getSentence().split("&")) {
