@@ -88,4 +88,10 @@ FAQ по командам:
 /punch - пнуть пользователя
  login
  Пример
- /punch user
+ /punch login
+
+ /faq - инфа по командам
+ text - текст вопроса
+ Пример
+ /faq
+ /faq text
