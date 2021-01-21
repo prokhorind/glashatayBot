@@ -48,7 +48,8 @@ public class GayChooseCommand implements Command {
     private List<SendMessage> createMessages(User user, Chat chat) {
         List<SendMessage> sendMessages = new ArrayList<>();
         Set<User> gayUsers = chat.getGayUsers();
-        Phrase phrase = phraseService.getRandomPhrase(gayUsers.stream().map(User::getTgId).collect(Collectors.toList()));
+        List<Integer> userIds = gayUsers.stream().map(User::getTgId).collect(Collectors.toList());
+        Phrase phrase = phraseService.getRandomPhrase(userIds,chat.isPublicPhrasesEnabled());
         String gayName = TelegramNameUtils.findName(user, TRUE);
         boolean isPhraseDynamic = phrase.getPhraseType().equalsIgnoreCase(PhraseType.DYNAMIC.name());
         boolean isPhraseCommon = phrase.getPhraseType().equalsIgnoreCase(PhraseType.COMMON.name());

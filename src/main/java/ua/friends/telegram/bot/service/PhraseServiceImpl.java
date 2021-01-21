@@ -14,7 +14,6 @@ public class PhraseServiceImpl implements PhraseService {
     @Inject
     private PhraseDao phraseDao;
 
-
     public Optional<Phrase> convert(int tgId, String text) {
         Phrase phrase = new Phrase();
         phrase.setAuthorTgId(tgId);
@@ -46,8 +45,8 @@ public class PhraseServiceImpl implements PhraseService {
         return phraseDao.getUsersPhrasesByUserIds(tgId);
     }
 
-    public Phrase getRandomPhrase(List<Integer> userIds) {
-        return phraseDao.getRandomPhrase(userIds);
+    public Phrase getRandomPhrase(List<Integer> userIds, boolean isPublicPhrasesEnabled) {
+        return isPublicPhrasesEnabled ? phraseDao.getRandomPhraseWithPublic(userIds) : phraseDao.getRandomPhrase(userIds);
     }
 
     public Optional<Phrase> get(int userId, int phraseId) {

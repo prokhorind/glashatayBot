@@ -10,6 +10,7 @@ public interface PhraseDao {
     List<Phrase> getUsersPhrasesByUserIds(List<Integer> userIds);
     Optional<Phrase> getPhrase(int userId, int phraseId);
     Phrase getRandomPhrase(List<Integer> userIds);
+    Phrase getRandomPhraseWithPublic(List<Integer> userIds);
     List<Phrase> getUsersPhrasesByPhraseIds(List<Integer> phraseIds);
     void remove(List<Phrase> phrases);
 }

@@ -47,6 +47,9 @@ public class Chat implements Serializable {
     @Column(columnDefinition = "boolean default true")
     private boolean autoPlayerPickEnabled;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean publicPhrasesEnabled;
+
     @Column
     private LocalDateTime lastMessage;
 
@@ -127,6 +130,14 @@ public class Chat implements Serializable {
 
     public LocalDateTime getLastMessage() {
         return lastMessage;
+    }
+
+    public void setPublicPhrasesEnabled(boolean publicPhrasesEnabled) {
+        this.publicPhrasesEnabled = publicPhrasesEnabled;
+    }
+
+    public boolean isPublicPhrasesEnabled() {
+        return publicPhrasesEnabled;
     }
 
     @Override

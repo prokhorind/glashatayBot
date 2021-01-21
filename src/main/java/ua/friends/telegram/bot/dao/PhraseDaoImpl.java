@@ -106,6 +106,31 @@ public class PhraseDaoImpl implements PhraseDao{
         }
     }
 
+    public Phrase getRandomPhraseWithPublic(List<Integer> userIds) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            Query query = session.createQuery("from Phrase where authorTgId in (:userIds) AND isPublic=:isPublic  order by rand()");
+            query.setMaxResults(1);
+            query.setParameterList("userIds", userIds);
+            query.setParameter("isPublic", Boolean.TRUE);
+            tx = session.beginTransaction();
+            Phrase result = (Phrase) query.getSingleResult();
+            session.flush();
+            tx.commit();
+            logger.info(String.format("%s %s", "was returned", result.toString()));
+            return result;
+        } catch (NoResultException e) {
+            if (Objects.nonNull(tx)) {
+                tx.rollback();
+            }
+            logger.warning(e.getMessage());
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
     public List<Phrase> getUsersPhrasesByPhraseIds(List<Integer> phraseIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

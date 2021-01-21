@@ -44,7 +44,6 @@ public class ChatDaoImpl implements ChatDao{
             session.saveOrUpdate(chat);
             session.flush();
             tx.commit();
-            logger.info("Number of failed games was updated:" + chat.toString());
         } catch (Exception e) {
             if (Objects.nonNull(tx)) {
                 tx.rollback();

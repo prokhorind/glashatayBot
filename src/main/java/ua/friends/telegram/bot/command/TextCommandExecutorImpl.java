@@ -13,45 +13,83 @@ import javax.annotation.PostConstruct;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-public class TextCommandExecutorImpl implements TextCommandExecutor{
+public class TextCommandExecutorImpl implements TextCommandExecutor {
 
     @Inject
     @Named("glashatay")
     private Command glashatayCommand;
-    @Inject @Named("invalidMessage")
+
+    @Inject
+    @Named("invalidMessage")
     private Command invalidMessageCommand;
-    @Inject @Named("deleteMessage")
+
+    @Inject
+    @Named("deleteMessage")
     private Command deleteMessageCommand;
-    @Inject @Named("gayReg")
+
+    @Inject
+    @Named("gayReg")
     private Command gayRegCommand;
-    @Inject @Named("ban")
+
+    @Inject
+    @Named("ban")
     private Command banCommand;
-    @Inject @Named("punch")
+
+    @Inject
+    @Named("punch")
     private Command punchCommand;
-    @Inject @Named("userId")
+
+    @Inject
+    @Named("userId")
     private Command userIdCommand;
-    @Inject @Named("ratMessage")
+
+    @Inject
+    @Named("ratMessage")
     private Command ratMessageCommand;
-    @Inject @Named("gayStat")
+
+    @Inject
+    @Named("gayStat")
     private Command gayStatCommand;
-    @Inject @Named("gayChoose")
+
+    @Inject
+    @Named("gayChoose")
     private Command gayChooseCommand;
-    @Inject @Named("addPhrase")
+
+    @Inject
+    @Named("addPhrase")
     private Command addPhraseCommand;
-    @Inject @Named("showUserPhrases")
+
+    @Inject
+    @Named("showUserPhrases")
     private Command showUserPhasesCommand;
-    @Inject @Named("removePhrases")
+
+    @Inject
+    @Named("removePhrases")
     private Command removePhrasesCommand;
-    @Inject @Named("importGayGameStats")
+
+    @Inject
+    @Named("importGayGameStats")
     private Command importGayGameStatsCommand;
-    @Inject @Named("fullGayGameStats")
+
+    @Inject
+    @Named("fullGayGameStats")
     private Command fullGayGameStatsCommand;
-    @Inject @Named("phrasePreview")
+
+    @Inject
+    @Named("phrasePreview")
     private Command phrasePreviewCommand;
-    @Inject @Named("gayRem")
+
+    @Inject
+    @Named("gayRem")
     private Command gayRemCommand;
-    @Inject @Named("autoPick")
+
+    @Inject
+    @Named("autoPick")
     private Command autoPickCommand;
+
+    @Inject
+    @Named("publicPhrases")
+    private Command publicPhraseSwitcherCommand;
 
     private Map<Endpoint, Command> commandMap;
 
@@ -76,6 +114,7 @@ public class TextCommandExecutorImpl implements TextCommandExecutor{
         commandMap.put(Endpoint.ALLSTAT, fullGayGameStatsCommand);
         commandMap.put(Endpoint.PHRASEPREVIEW, phrasePreviewCommand);
         commandMap.put(Endpoint.AUTOPICK, autoPickCommand);
+        commandMap.put(Endpoint.PUBLICPHRASES,publicPhraseSwitcherCommand);
     }
 
     public List<BotApiMethod> execute(Endpoint endpoint, Update update) {

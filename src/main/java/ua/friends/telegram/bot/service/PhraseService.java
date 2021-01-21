@@ -12,6 +12,6 @@ public interface PhraseService {
     void save(Phrase phrase);
     int count(List<Integer> tgId);
     List<Phrase> getUserPhrases(List<Integer> tgId);
-    Phrase getRandomPhrase(List<Integer> userIds);
+    Phrase getRandomPhrase(List<Integer> userIds, boolean isPublicPhrasesEnabled);
     Optional<Phrase> get(int userId, int phraseId);
 }

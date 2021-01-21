@@ -29,6 +29,9 @@ public class Phrase implements Serializable {
     @Column(length = 2056)
     private String sentence;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isPublic;
+
     public Phrase() {
     }
 
@@ -66,6 +69,14 @@ public class Phrase implements Serializable {
 
     public String getSentence() {
         return sentence;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
     }
 
     @Override
