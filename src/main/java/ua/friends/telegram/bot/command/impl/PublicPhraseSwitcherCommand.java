@@ -35,11 +35,11 @@ public class PublicPhraseSwitcherCommand implements Command {
             return "Допустимое значение: ON/OFF ";
         }
 
-        if ("ON".equalsIgnoreCase(param) && !chat.isAutoPlayerPickEnabled()) {
+        if ("ON".equalsIgnoreCase(param) && !chat.isPublicPhrasesEnabled()) {
             chat.setPublicPhrasesEnabled(Boolean.TRUE);
             chatService.saveOrUpdate(chat);
             return "Фразы из других чатов включены";
-        } else if ("OFF".equalsIgnoreCase(param) && chat.isAutoPlayerPickEnabled()) {
+        } else if ("OFF".equalsIgnoreCase(param) && chat.isPublicPhrasesEnabled()) {
             chat.setPublicPhrasesEnabled(Boolean.FALSE);
             chatService.saveOrUpdate(chat);
             return "Фразы из других чатов выключены";
