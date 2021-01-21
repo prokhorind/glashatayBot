@@ -31,7 +31,8 @@ public class FAQCommand implements Command {
             }
         }
         List<BotApiMethod> messages = new ArrayList<BotApiMethod>();
-        messages.add(MessageUtils.generateMessage(AdminUtils.getChatAdminId(), String.format("s%:%s:%s", update.getMessage().getFrom().getId(), chatId, command[1])));
+        messages.add(MessageUtils.generateMessage(AdminUtils.getChatAdminId(), String.format("%s:%s:%s", update.getMessage().getFrom().toString(), chatId, command[1])));
+        messages.add(MessageUtils.generateMessage(chatId, "Доставлено"));
         return messages;
     }
 
