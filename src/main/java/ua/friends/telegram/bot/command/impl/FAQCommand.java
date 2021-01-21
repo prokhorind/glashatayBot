@@ -2,13 +2,12 @@ package ua.friends.telegram.bot.command.impl;
 
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ua.friends.telegram.bot.command.Command;
@@ -31,10 +30,10 @@ public class FAQCommand implements Command {
                 return Collections.singletonList(MessageUtils.generateMessage(chatId, "нет доступа к FAQ файлу"));
             }
         }
-        SendMessage toAdmin = MessageUtils.generateMessage(AdminUtils.getChatAdminId(),
-            String.format("s%:%s:%s", update.getMessage().getFrom().getId(), chatId, command[1]));
-        SendMessage toUser = MessageUtils.generateMessage(chatId, "Доставлено");
-        return Arrays.asList(toAdmin, toUser);
+        List<BotApiMethod> messages = new ArrayList<BotApiMethod>();
+        messages.add(MessageUtils.generateMessage(AdminUtils.getChatAdminId(), String.format("s%:%s:%s", update.getMessage().getFrom().getId(), chatId, command[1])));
+        messages.add(MessageUtils.generateMessage(chatId, "Доставлено"));
+        return messages;
     }
 
 }
