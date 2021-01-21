@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.MessageUtils;
+import ua.friends.telegram.bot.utils.AdminUtils;
 
 public class FAQCommand implements Command {
     @Override
@@ -27,7 +28,8 @@ public class FAQCommand implements Command {
                return Collections.singletonList(MessageUtils.generateMessage(chatId,"нет доступа к FAQ файлу"));
             }
         }
-        return Collections.singletonList(MessageUtils.generateMessage(chatId,String.valueOf(chatId)));
+        return Collections.singletonList(MessageUtils.generateMessage(AdminUtils.getChatAdminId(),String.format("%s:%s", chatId,command[1])));
     }
+
 
 }

@@ -106,4 +106,8 @@ public class AdminUtils {
     public static String getBotUsername() {
         return System.getenv("BOT_USERNAME");
     }
+
+    public static long getChatAdminId(){
+        return Long.parseLong(System.getenv("ADMIN_BOT_CHAT"));
+    }
 }
