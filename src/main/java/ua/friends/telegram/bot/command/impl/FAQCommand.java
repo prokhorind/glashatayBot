@@ -32,7 +32,7 @@ public class FAQCommand implements Command {
             }
         }
         SendMessage toAdmin = MessageUtils.generateMessage(AdminUtils.getChatAdminId(),
-            String.format("s%:%s:%s", update.getMessage().getFrom().toString(), chatId, command[1]));
+            String.format("s%:%s:%s", update.getMessage().getFrom().getId(), chatId, command[1]));
         SendMessage toUser = MessageUtils.generateMessage(chatId, "Доставлено");
         return Arrays.asList(toAdmin, toUser);
     }
