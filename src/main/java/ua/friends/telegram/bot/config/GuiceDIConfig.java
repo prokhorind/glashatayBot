@@ -13,6 +13,7 @@ import ua.friends.telegram.bot.command.impl.AddPhraseCommand;
 import ua.friends.telegram.bot.command.impl.AutoPickCommand;
 import ua.friends.telegram.bot.command.impl.BanCommand;
 import ua.friends.telegram.bot.command.impl.DeleteMessageCommand;
+import ua.friends.telegram.bot.command.impl.FAQCommand;
 import ua.friends.telegram.bot.command.impl.FullGayGameStatsCommand;
 import ua.friends.telegram.bot.command.impl.GayChooseCommand;
 import ua.friends.telegram.bot.command.impl.GayRegCommand;
@@ -92,6 +93,7 @@ public class GuiceDIConfig extends AbstractModule {
         bind(Command.class).annotatedWith(Names.named("phrasePreview")).to(PhrasePreviewCommand.class);
         bind(Command.class).annotatedWith(Names.named("autoPick")).to(AutoPickCommand.class);
         bind(Command.class).annotatedWith(Names.named("publicPhrases")).to(PublicPhraseSwitcherCommand.class);
+        bind(Command.class).annotatedWith(Names.named("faq")).to(FAQCommand.class);
 
         bind(TextCommandExecutor.class).to(TextCommandExecutorImpl.class).in(Scopes.SINGLETON);
 

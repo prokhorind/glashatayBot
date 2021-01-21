@@ -1,14 +1,11 @@
 package ua.friends.telegram.bot.command;
 
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import ua.friends.telegram.bot.command.impl.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -91,6 +88,10 @@ public class TextCommandExecutorImpl implements TextCommandExecutor {
     @Named("publicPhrases")
     private Command publicPhraseSwitcherCommand;
 
+    @Inject
+    @Named("faq")
+    private Command faqCommand;
+
     private Map<Endpoint, Command> commandMap;
 
     @Inject
@@ -115,6 +116,7 @@ public class TextCommandExecutorImpl implements TextCommandExecutor {
         commandMap.put(Endpoint.PHRASEPREVIEW, phrasePreviewCommand);
         commandMap.put(Endpoint.AUTOPICK, autoPickCommand);
         commandMap.put(Endpoint.PUBLICPHRASES,publicPhraseSwitcherCommand);
+        commandMap.put(Endpoint.FAQ,faqCommand);
     }
 
     public List<BotApiMethod> execute(Endpoint endpoint, Update update) {
