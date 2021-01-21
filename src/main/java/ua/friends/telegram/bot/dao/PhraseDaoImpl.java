@@ -110,7 +110,7 @@ public class PhraseDaoImpl implements PhraseDao{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
-            Query query = session.createQuery("from Phrase where authorTgId in (:userIds) AND isPublic=:isPublic  order by rand()");
+            Query query = session.createQuery("from Phrase where authorTgId in (:userIds) OR isPublic=:isPublic  order by rand()");
             query.setMaxResults(1);
             query.setParameterList("userIds", userIds);
             query.setParameter("isPublic", Boolean.TRUE);
