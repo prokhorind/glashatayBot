@@ -10,6 +10,7 @@ import ua.friends.telegram.bot.command.Command;
 import ua.friends.telegram.bot.command.TextCommandExecutor;
 import ua.friends.telegram.bot.command.TextCommandExecutorImpl;
 import ua.friends.telegram.bot.command.impl.AddPhraseCommand;
+import ua.friends.telegram.bot.command.impl.AdminResponseCommand;
 import ua.friends.telegram.bot.command.impl.AutoPickCommand;
 import ua.friends.telegram.bot.command.impl.BanCommand;
 import ua.friends.telegram.bot.command.impl.DeleteMessageCommand;
@@ -94,6 +95,7 @@ public class GuiceDIConfig extends AbstractModule {
         bind(Command.class).annotatedWith(Names.named("autoPick")).to(AutoPickCommand.class);
         bind(Command.class).annotatedWith(Names.named("publicPhrases")).to(PublicPhraseSwitcherCommand.class);
         bind(Command.class).annotatedWith(Names.named("faq")).to(FAQCommand.class);
+        bind(Command.class).annotatedWith(Names.named("response")).to(AdminResponseCommand.class);
 
         bind(TextCommandExecutor.class).to(TextCommandExecutorImpl.class).in(Scopes.SINGLETON);
 

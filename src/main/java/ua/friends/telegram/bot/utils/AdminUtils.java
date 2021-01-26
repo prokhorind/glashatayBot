@@ -35,7 +35,7 @@ public class AdminUtils {
         return isUserHerokuAdmin(login) || isUserTelegramChatAdmin(userId, chatId);
     }
 
-    private static boolean isUserHerokuAdmin(String login) {
+    public static boolean isUserHerokuAdmin(String login) {
         return login.equalsIgnoreCase(System.getenv("ADMIN"));
     }
 

@@ -92,6 +92,10 @@ public class TextCommandExecutorImpl implements TextCommandExecutor {
     @Named("faq")
     private Command faqCommand;
 
+    @Inject
+    @Named("response")
+    private Command responseCommand;
+
     private Map<Endpoint, Command> commandMap;
 
     @Inject
@@ -117,6 +121,7 @@ public class TextCommandExecutorImpl implements TextCommandExecutor {
         commandMap.put(Endpoint.AUTOPICK, autoPickCommand);
         commandMap.put(Endpoint.PUBLICPHRASES,publicPhraseSwitcherCommand);
         commandMap.put(Endpoint.FAQ,faqCommand);
+        commandMap.put(Endpoint.RESPONSE,responseCommand);
     }
 
     public List<BotApiMethod> execute(Endpoint endpoint, Update update) {
