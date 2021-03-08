@@ -16,9 +16,13 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import ua.friends.telegram.bot.command.Endpoint;
 import ua.friends.telegram.bot.command.TextCommandExecutor;
 import ua.friends.telegram.bot.command.impl.UnbanCommand;
+import ua.friends.telegram.bot.config.GuiceDIConfig;
 import ua.friends.telegram.bot.data.MessageData;
 import ua.friends.telegram.bot.entity.Chat;
 import ua.friends.telegram.bot.service.ChatService;
@@ -126,7 +130,8 @@ public class GlashatayBotImpl extends TelegramLongPollingBot implements Glashata
     }
 
     private boolean canUnBan(Update update) {
-        List<SendMessage> msgs = new UnbanCommand().executeCommand(update);
+        Injector injector = Guice.createInjector(new GuiceDIConfig());
+        List<SendMessage> msgs = injector.getInstance(UnbanCommand.class).executeCommand(update);
         return Objects.nonNull(msgs) && msgs.size() > 0;
     }
 
