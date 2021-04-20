@@ -11,6 +11,8 @@ import ua.friends.telegram.bot.utils.TelegramNameUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -21,7 +23,7 @@ public class FullGayGameStatsCommand implements Command {
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
-
+        Function<Long, String> footer = i -> String.format("%s:%s", "Всего", i);
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
         List<Object> gayGameList = gayGameService.find(chatId);
@@ -30,8 +32,10 @@ public class FullGayGameStatsCommand implements Command {
         }
         addHeader(sb);
         AtomicInteger playerNum = new AtomicInteger(0);
-        gayGameList.forEach(g -> buildMessage(sb, (Object[]) g, playerNum));
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
+        AtomicLong fullSumOfPick = new AtomicLong(0);
+        gayGameList.forEach(g -> buildMessage(sb, (Object[]) g, playerNum, fullSumOfPick));
+        sb.append(footer.apply(fullSumOfPick.get()));
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(), "HTML"));
     }
 
     private void addHeader(StringBuilder sb) {
@@ -39,15 +43,16 @@ public class FullGayGameStatsCommand implements Command {
         sb.append("\n");
     }
 
-    private void buildMessage(StringBuilder sb, Object[] user, AtomicInteger playerNum) {
+    private void buildMessage(StringBuilder sb, Object[] user, AtomicInteger playerNum, AtomicLong fullSomeOfPick) {
         long sum = (long) user[4];
         String login = (String) user[1];
         String name = (String) user[2];
         String surname = (String) user[3];
-        sb.append(String.format("%s%d%s%s ","<strong>",playerNum.incrementAndGet(),".","</strong>"));
+        sb.append(String.format("%s%d%s%s ", "<strong>", playerNum.incrementAndGet(), ".", "</strong>"));
         sb.append(TelegramNameUtils.findName(login, name, surname, false));
         sb.append(" : ");
         sb.append(sum);
         sb.append("\n");
+        fullSomeOfPick.addAndGet(sum);
     }
 }

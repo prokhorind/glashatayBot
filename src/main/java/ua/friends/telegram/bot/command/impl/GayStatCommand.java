@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -25,6 +26,7 @@ public class GayStatCommand implements Command {
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
+        Function<Integer,String> fullStatFooter = i -> String.format("%s:%s","Всего",i);
         String[] command = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
@@ -36,8 +38,10 @@ public class GayStatCommand implements Command {
 
         createHeader(sb, year);
         AtomicInteger playerNum = new AtomicInteger(0);
-        gayGameList.forEach(g -> buildMessage(sb, g, playerNum));
-        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(),"HTML"));
+        AtomicInteger fullSumOfPick = new AtomicInteger(0);
+        gayGameList.forEach(g -> buildMessage(sb, g, playerNum, fullSumOfPick));
+        sb.append(fullStatFooter.apply(fullSumOfPick.get()));
+        return Collections.singletonList(MessageUtils.generateMessage(chatId, sb.toString(), "HTML"));
     }
 
     private int getYear(String[] command) {
@@ -69,11 +73,13 @@ public class GayStatCommand implements Command {
         }
     }
 
-    private void buildMessage(StringBuilder sb, GayGame game, AtomicInteger playerNum) {
-        sb.append(String.format("%s%d%s%s ","<strong>",playerNum.incrementAndGet(),".","</strong>"));
+    private void buildMessage(StringBuilder sb, GayGame game, AtomicInteger playerNum,AtomicInteger fullSumOfPick) {
+        int count = game.getCount();
+        sb.append(String.format("%s%d%s%s ", "<strong>", playerNum.incrementAndGet(), ".", "</strong>"));
         sb.append(TelegramNameUtils.findName(game.getUser(), false));
         sb.append(" : ");
-        sb.append(game.getCount());
+        sb.append(count);
         sb.append("\n");
+        fullSumOfPick.addAndGet(count);
     }
 }
