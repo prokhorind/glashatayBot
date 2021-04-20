@@ -23,7 +23,7 @@ public class FullGayGameStatsCommand implements Command {
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
-        Function<Long, String> footer = i -> String.format("%s:%s", "Всего", i);
+        Function<Long, String> footer = i -> String.format("%s%s:%s%s","<strong>", "Всего", i,"</strong>");
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
         List<Object> gayGameList = gayGameService.find(chatId);

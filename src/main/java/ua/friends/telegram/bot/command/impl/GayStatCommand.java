@@ -26,7 +26,7 @@ public class GayStatCommand implements Command {
 
     @Override
     public List<SendMessage> executeCommand(Update update) {
-        Function<Integer,String> fullStatFooter = i -> String.format("%s:%s","Всего",i);
+        Function<Integer,String> fullStatFooter = i -> String.format("%s%s:%s%s","<strong>", "Всего", i,"</strong>");
         String[] command = update.getMessage().getText().split(" ", 2);
         long chatId = update.getMessage().getChatId();
         StringBuilder sb = new StringBuilder();
