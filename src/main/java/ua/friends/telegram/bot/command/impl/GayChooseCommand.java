@@ -83,7 +83,7 @@ public class GayChooseCommand implements Command {
 
     private void generateCommonEndMessage(Chat chat, List<SendMessage> sendMessages, String gayName) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Пидор дня:");
+        sb.append("Підор дня:");
         sb.append(gayName);
         sendMessages.add(MessageUtils.generateMessage(chat.getChatId(), sb.toString()));
     }
