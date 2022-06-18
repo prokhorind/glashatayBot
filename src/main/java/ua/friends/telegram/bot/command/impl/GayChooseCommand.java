@@ -46,7 +46,7 @@ public class GayChooseCommand implements Command {
             return createMessages(user, chat);
         }
         return Collections
-            .singletonList(MessageUtils.generateMessage(chatId, "Пидор дня уже выбран:" + optionalCronInfo.get().getGayName()));
+            .singletonList(MessageUtils.generateMessage(chatId, "Підора дня вже обрано:" + optionalCronInfo.get().getGayName()));
     }
 
     private List<SendMessage> createMessages(User user, Chat chat) {
